@@ -14,6 +14,7 @@ public class TowerController : MonoBehaviour
     public float maxChargeLevel = 10f;  // The maximum charge level of the tower
     private float attackTimer = 0f;  // Timer to control attack intervals
     public float range = 10f;       // Range within which the tower can attack enemies
+    public FlashlightCollider flashlightCollider;  // Reference to the flashlight collider script
 
     void Start()
     {
@@ -31,6 +32,10 @@ public class TowerController : MonoBehaviour
 
     void Update()
     {
+        if (flashlightCollider.IsHitByFlashlight(gameObject))
+        {
+            ChargeTower();
+        }
         // Only allow the tower to attack if it has been charged
         float bulletEnergyCost = bulletPrefab.GetComponent<BulletController>().energyCost;
         attackTimer -= Time.deltaTime;

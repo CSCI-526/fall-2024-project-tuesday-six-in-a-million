@@ -62,15 +62,13 @@ public class PlayerController : MonoBehaviour
                 flashlightPower = 0;
                 flashlight.enabled = false;
             }
-            UpdateFlashlightUI();
-            HandleFlashlightCollision();
         }
         else if (flashlightPower < 100)
         {
             // Recharge flashlight when it's off
             flashlightPower += powerRechargeRate * Time.deltaTime;
-            UpdateFlashlightUI();
         }
+        UpdateFlashlightUI();
 
         // Move player
         MovePlayer();
@@ -140,24 +138,6 @@ public class PlayerController : MonoBehaviour
         else
         {
             Debug.Log("Not enough flashlight power to place a tower.");
-        }
-    }
-
-    void HandleFlashlightCollision()
-    {
-        Debug.Log("Checking for tower collision...");
-        Ray ray = new Ray(flashlight.transform.position, flashlight.transform.forward);
-        RaycastHit hit;
-
-        Debug.DrawRay(flashlight.transform.position, flashlight.transform.forward * flashlightRange, Color.green);
-        if (Physics.Raycast(ray, out hit, flashlightRange, towerLayer))
-        {
-            TowerController tower = hit.collider.GetComponent<TowerController>();
-            if (tower != null)
-            {
-                // Charge the tower
-                tower.ChargeTower();
-            }
         }
     }
 

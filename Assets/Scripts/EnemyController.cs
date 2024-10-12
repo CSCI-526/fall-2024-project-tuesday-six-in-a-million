@@ -14,6 +14,7 @@ public class EnemyController : MonoBehaviour
     public GameObject Player;
     public GameObject ResetButton;
     public Light flashlight;
+    public FlashlightCollider flashlightCollider;
 
     void Start()
     {
@@ -50,19 +51,10 @@ public class EnemyController : MonoBehaviour
         {
             Base = Base2;
         }
-        // If hit by flashlight, reduce movement speed
-        Ray ray = new Ray(flashlight.transform.position, flashlight.transform.forward);
-        RaycastHit hit;
-
         int moveDistance = moveSpeed;
-        if (flashlight.enabled) {
-            if (Physics.Raycast(ray, out hit, flashlight.range))
-            {
-                if (hit.collider.gameObject == gameObject)
-                {
-                    moveDistance = moveSpeed / 2;
-                }
-            }
+        if (flashlightCollider.IsHitByFlashlight(gameObject))
+        {
+            moveDistance = moveSpeed / 2;
         }
         transform.position = Vector3.MoveTowards(transform.position, Base.transform.position, moveDistance * Time.deltaTime);
     }
