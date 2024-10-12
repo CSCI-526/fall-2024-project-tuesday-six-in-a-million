@@ -33,9 +33,9 @@ public class TowerController : MonoBehaviour
     {
         // Only allow the tower to attack if it has been charged
         float bulletEnergyCost = bulletPrefab.GetComponent<BulletController>().energyCost;
+        attackTimer -= Time.deltaTime;
         if (firePoint != null && chargeLevel >= bulletEnergyCost)
         {
-            attackTimer -= Time.deltaTime;
             if (attackTimer <= 0f)
             {
                 FireBullet();

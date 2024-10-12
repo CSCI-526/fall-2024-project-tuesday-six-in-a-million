@@ -57,6 +57,11 @@ public class PlayerController : MonoBehaviour
         if (flashlight.enabled)
         {
             flashlightPower -= powerDrainRate * Time.deltaTime;
+            if (flashlightPower <= 0)
+            {
+                flashlightPower = 0;
+                flashlight.enabled = false;
+            }
             UpdateFlashlightUI();
             HandleFlashlightCollision();
         }
