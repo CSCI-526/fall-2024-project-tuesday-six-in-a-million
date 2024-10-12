@@ -6,6 +6,7 @@ public class BulletController : MonoBehaviour
 {
     public GameObject target;  // The target that the bullet will move toward
     public float speed = 10.0f;  // Speed of the bullet
+    public float energyCost = 1f;  // Energy cost of the bullet
 
     void Update()
     {

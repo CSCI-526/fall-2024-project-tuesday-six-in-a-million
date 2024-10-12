@@ -28,7 +28,7 @@ public class SpawnerController : MonoBehaviour
             lastTime = Time.time;
             GameObject enemy = Instantiate(enemyPrefab, transform.position, transform.rotation);
             enemy.GetComponent<EnemyController>().isPrefab = false;
-            if (spawnCount > 8) {
+            if (spawnCount > 10) {
                 enemy.GetComponent<EnemyController>().health = 3;
             } else if (spawnCount > 5) {
                 enemy.GetComponent<EnemyController>().health = 2;

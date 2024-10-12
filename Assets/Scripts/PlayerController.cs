@@ -16,7 +16,8 @@ public class PlayerController : MonoBehaviour
     public float flashlightPower = 100f;  // Flashlight's maximum power
     public float powerDrainAmount = 5f;   // Amount of power drained per tower charge
     public float powerRechargeRate = 5f;  // How fast flashlight recharges when off
-    public float flashlightRange = 20f;   // Range of flashlight to interact with towers
+    public float powerDrainRate = 5f;     // How fast flashlight drains when on
+    public float flashlightRange = 30f;   // Range of flashlight to interact with towers
     public LayerMask towerLayer;
     public float mouseSensitivity = 100.0f;  // Sensitivity for mouse movement
     private float mouseX;
@@ -55,6 +56,8 @@ public class PlayerController : MonoBehaviour
         // Handle flashlight interactions if it's on
         if (flashlight.enabled)
         {
+            flashlightPower -= powerDrainRate * Time.deltaTime;
+            UpdateFlashlightUI();
             HandleFlashlightCollision();
         }
         else if (flashlightPower < 100)
@@ -82,11 +85,13 @@ public class PlayerController : MonoBehaviour
 
     void MouseControl()
     {
-        // Capture mouse movement for rotating the flashlight (only on Y-axis)
-        mouseX += Input.GetAxis("Mouse X") * mouseSensitivity;
+        Quaternion cameraRotation = Camera.main.transform.rotation;
 
-        // Rotate the flashlight only around the Y-axis
-        flashlight.transform.localRotation = Quaternion.Euler(0, mouseX, 0);
+        // Decompose the rotation into Euler angles (degrees for each axis)
+        Vector3 cameraEulerAngles = cameraRotation.eulerAngles;
+
+        // Set flashlight rotation, but keep the X (pitch) axis fixed so it doesn't point down
+        flashlight.transform.rotation = Quaternion.Euler(0, cameraEulerAngles.y, cameraEulerAngles.z);
     }
 
     void MovePlayer()
@@ -135,31 +140,18 @@ public class PlayerController : MonoBehaviour
 
     void HandleFlashlightCollision()
     {
+        Debug.Log("Checking for tower collision...");
         Ray ray = new Ray(flashlight.transform.position, flashlight.transform.forward);
         RaycastHit hit;
 
+        Debug.DrawRay(flashlight.transform.position, flashlight.transform.forward * flashlightRange, Color.green);
         if (Physics.Raycast(ray, out hit, flashlightRange, towerLayer))
         {
             TowerController tower = hit.collider.GetComponent<TowerController>();
-            if (tower != null && !tower.isCharged)
+            if (tower != null)
             {
                 // Charge the tower
                 tower.ChargeTower();
-
-                // Drain flashlight power by 5 when charging a tower
-                flashlightPower -= powerDrainAmount;
-                flashlightPower = Mathf.Clamp(flashlightPower, 0, 100);  // Prevent negative power
-
-                // Update the UI after draining power
-                UpdateFlashlightUI();
-
-                Debug.Log("Tower activated, flashlight power drained by 5.");
-
-                if (flashlightPower <= 0)
-                {
-                    flashlightPower = 0;
-                    flashlight.enabled = false;  // Turn off flashlight if power is depleted
-                }
             }
         }
     }
