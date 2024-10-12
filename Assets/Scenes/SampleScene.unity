@@ -941,6 +941,7 @@ GameObject:
   m_Component:
   - component: {fileID: 692232251}
   - component: {fileID: 692232250}
+  - component: {fileID: 692232252}
   m_Layer: 0
   m_Name: Flashlight
   m_TagString: Untagged
@@ -1025,6 +1026,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 274688718}
   m_LocalEulerAnglesHint: {x: 28.337, y: 0.638, z: 19.819}
+--- !u!114 &692232252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 692232249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84745eb4b9dcf49c2b0664915414be46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashlight: {fileID: 692232250}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1717,6 +1731,7 @@ MonoBehaviour:
   Player: {fileID: 274688713}
   ResetButton: {fileID: 1873548347}
   flashlight: {fileID: 692232250}
+  flashlightCollider: {fileID: 692232252}
 --- !u!1 &1202911242
 GameObject:
   m_ObjectHideFlags: 0
@@ -2083,6 +2098,7 @@ MonoBehaviour:
   chargeLevel: 0
   maxChargeLevel: 10
   range: 10
+  flashlightCollider: {fileID: 692232252}
 --- !u!1 &1384375739
 GameObject:
   m_ObjectHideFlags: 0
