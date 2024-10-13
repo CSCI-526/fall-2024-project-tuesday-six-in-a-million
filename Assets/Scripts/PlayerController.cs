@@ -149,4 +149,15 @@ public class PlayerController : MonoBehaviour
             uiUpdater.UpdateFlashlightUI(flashlightPower);
         }
     }
+
+    // Function to recharge the flashlight power
+    public void RechargeEnergy(float amount) {
+        flashlightPower += amount;
+        if (flashlightPower > 100)  
+        {   
+            flashlightPower = 100;  // Cap the flashlight power at 100
+            
+        }
+        UpdateFlashlightUI();
+    }
 }
