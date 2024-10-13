@@ -63,11 +63,11 @@ public class PlayerController : MonoBehaviour
                 flashlight.enabled = false;
             }
         }
-        else if (flashlightPower < 100)
-        {
-            // Recharge flashlight when it's off
-            flashlightPower += powerRechargeRate * Time.deltaTime;
-        }
+        // else if (flashlightPower < 100)
+        // {
+        //     // Recharge flashlight when it's off
+        //     flashlightPower += powerRechargeRate * Time.deltaTime;
+        // }
         UpdateFlashlightUI();
 
         // Move player
