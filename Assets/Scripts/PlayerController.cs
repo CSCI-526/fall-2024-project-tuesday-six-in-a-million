@@ -12,30 +12,42 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
 
     public GameObject towerPrefab;
-    public Light flashlight;
-    public float flashlightPower = 100f;  // Flashlight's maximum power
-    public float powerDrainAmount = 5f;   // Amount of power drained per tower charge
-    public float powerRechargeRate = 5f;  // How fast flashlight recharges when off
-    public float powerDrainRate = 5f;     // How fast flashlight drains when on
-    public float flashlightRange = 30f;   // Range of flashlight to interact with towers
+    public GameObject helpText;
     public LayerMask towerLayer;
     public float mouseSensitivity = 100.0f;  // Sensitivity for mouse movement
     private float mouseX;
 
-    public FlashlightPowerUpdater uiUpdater;  // Reference to the UI updater script
+    public FlashlightPowerUpdater flashlight;  // Reference to the UI updater script
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        flashlight.enabled = false;  // Start with the flashlight off
+    }
+
+    void ToggleHelp() {
+        print("Toggling help text");
+        if (helpText.activeSelf) {
+            print("Deactivating help text");
+            helpText.SetActive(false);
+            Time.timeScale = 1;
+        } else {
+            helpText.SetActive(true);
+            Time.timeScale = 0;
+        }
     }
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            ToggleHelp();
+        }
         if (Time.timeScale == 0)
         {
             return;  // Prevent movement and interactions if game is paused
         }
+
+        // Toggle help text with h key
 
         // Handle flashlight rotation
         MouseControl();
@@ -47,28 +59,8 @@ public class PlayerController : MonoBehaviour
         // Toggle flashlight with F key
         if (Input.GetKeyDown(KeyCode.F))
         {
-            if (flashlightPower > 0)
-            {
-                flashlight.enabled = !flashlight.enabled;  // Toggle flashlight on/off
-            }
+            flashlight.toggleFlashlight();
         }
-
-        // Handle flashlight interactions if it's on
-        if (flashlight.enabled)
-        {
-            flashlightPower -= powerDrainRate * Time.deltaTime;
-            if (flashlightPower <= 0)
-            {
-                flashlightPower = 0;
-                flashlight.enabled = false;
-            }
-        }
-        // else if (flashlightPower < 100)
-        // {
-        //     // Recharge flashlight when it's off
-        //     flashlightPower += powerRechargeRate * Time.deltaTime;
-        // }
-        UpdateFlashlightUI();
 
         // Move player
         MovePlayer();
@@ -129,35 +121,7 @@ public class PlayerController : MonoBehaviour
 
     void CreateTower()
     {
-        if (flashlightPower > 0)
-        {
-            // Spawn a tower to the right of the player
-            GameObject tower = Instantiate(towerPrefab, transform.position + new Vector3(2, 0, 0), transform.rotation);
-            Debug.Log("Tower spawned successfully.");
-        }
-        else
-        {
-            Debug.Log("Not enough flashlight power to place a tower.");
-        }
-    }
-
-    // Function to update the flashlight power on the UI
-    void UpdateFlashlightUI()
-    {
-        if (uiUpdater != null)
-        {
-            uiUpdater.UpdateFlashlightUI(flashlightPower);
-        }
-    }
-
-    // Function to recharge the flashlight power
-    public void RechargeEnergy(float amount) {
-        flashlightPower += amount;
-        if (flashlightPower > 100)  
-        {   
-            flashlightPower = 100;  // Cap the flashlight power at 100
-            
-        }
-        UpdateFlashlightUI();
+        GameObject tower = Instantiate(towerPrefab, transform.position + new Vector3(2, 0, 0), transform.rotation);
+        Debug.Log("Tower spawned successfully.");
     }
 }

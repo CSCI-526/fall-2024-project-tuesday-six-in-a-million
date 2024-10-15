@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class TowerController : MonoBehaviour
 {
     public GameObject bulletPrefab;  // Bullet prefab to shoot
-    public GameObject Flashlight;    // Reference to the flashlight object
     public GameObject Indicator;     // Reference to the indicator object
     public Transform firePoint;      // The position where bullets are fired from
     public float attackInterval = 2f;  // Time between each attack
@@ -15,6 +14,7 @@ public class TowerController : MonoBehaviour
     private float attackTimer = 0f;  // Timer to control attack intervals
     public float range = 10f;       // Range within which the tower can attack enemies
     public FlashlightCollider flashlightCollider;  // Reference to the flashlight collider script
+    public FlashlightPowerUpdater flashlight;  // Reference to the flashlight power updater script
 
     void Start()
     {
@@ -61,12 +61,11 @@ public class TowerController : MonoBehaviour
     {
         if (chargeLevel < maxChargeLevel)
         {
-            chargeLevel += Flashlight.GetComponent<PlayerController>().powerDrainAmount * Time.deltaTime;
+            chargeLevel += flashlight.powerDrainRate * Time.deltaTime;  // Increase the charge level
             if (chargeLevel > maxChargeLevel)
             {
                 chargeLevel = maxChargeLevel;  // Clamp the charge level to the maximum
             }
-            Debug.Log("Tower charged by " + Flashlight.GetComponent<PlayerController>().powerDrainAmount + " energy.");
         }
     }
 

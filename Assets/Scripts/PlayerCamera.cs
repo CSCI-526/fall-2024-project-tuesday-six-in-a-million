@@ -8,6 +8,7 @@ public class PlayerCamera : MonoBehaviour
     public float distance = 7f; // Distance from the player
     public float height = 5f;   // Height above the player
     public float sensitivity = 100f; // Mouse sensitivity for rotation
+    public float verticalOffset = 2f; // Vertical offset for the camera
 
     private Vector3 offset;     // Offset from the player
 
@@ -28,7 +29,9 @@ public class PlayerCamera : MonoBehaviour
         // Set the camera's position to follow the player with the updated offset
         transform.position = player.transform.position + offset;
 
+        Vector3 LookAt = player.transform.position + Vector3.up * verticalOffset;
+
         // Always make the camera look at the player
-        transform.LookAt(player.transform.position);
+        transform.LookAt(LookAt);
     }
 }

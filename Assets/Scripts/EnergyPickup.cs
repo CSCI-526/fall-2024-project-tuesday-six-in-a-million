@@ -14,7 +14,7 @@ public class EnergyPickup : MonoBehaviour
         if (player != null)
         {
             // 调用玩家的能量回复函数
-            player.RechargeEnergy(energyAmount);
+            // player.RechargeEnergy(energyAmount);
 
             // 物体被拾取后销毁
             Destroy(gameObject);
