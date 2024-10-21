@@ -16,6 +16,9 @@ public class EnemyController : MonoBehaviour
     public Light flashlight;
     public FlashlightCollider flashlightCollider;
 
+    // public GameDataRecorder dataRecorder;   // Data recorder
+    public FirebaseDataSender firebaseDataSender;  // Reference to FirebaseDataSender
+
     void Start()
     {
         // Set the color of the enemy based on the health
@@ -70,6 +73,13 @@ public class EnemyController : MonoBehaviour
             GameObject.Find("GameOver").GetComponent<UnityEngine.UI.Text>().color = new Color(1, 0, 0, 1);
             // make the reset button visible
             ResetButton.SetActive(true);
+              // Record game data
+            int currentWave = FindObjectOfType<SpawnerController>().currentWave;
+            FirebaseDataSender.Instance.SendGameResult(false, currentWave, Time.timeSinceLevelLoad);
+            
+
+            // Prevent multiple triggers
+            this.enabled = false;
         }
     }
 }

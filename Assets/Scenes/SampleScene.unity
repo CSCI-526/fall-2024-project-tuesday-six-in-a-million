@@ -2392,6 +2392,7 @@ MonoBehaviour:
   ResetButton: {fileID: 1873548347}
   flashlight: {fileID: 692232250}
   flashlightCollider: {fileID: 692232252}
+  firebaseDataSender: {fileID: 1613451883}
 --- !u!1 &1202911242
 GameObject:
   m_ObjectHideFlags: 0
@@ -3012,7 +3013,7 @@ MonoBehaviour:
   totalEnemiesGenerated: 0
   totalEnemiesKilled: 0
   ResetButton: {fileID: 0}
-  dataRecorder: {fileID: 0}
+  firebaseDataSender: {fileID: 0}
 --- !u!65 &1453243113
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3340,6 +3341,50 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1611982488}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1613451882
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1613451884}
+  - component: {fileID: 1613451883}
+  m_Layer: 0
+  m_Name: FireDataBaseSender
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1613451883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1613451882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8899747ff5ce0433b8832cac5f61e092, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1613451884
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1613451882}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 14.324575, z: -47.308514}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1622281304
 GameObject:
   m_ObjectHideFlags: 0
@@ -3381,7 +3426,7 @@ MonoBehaviour:
   totalEnemiesGenerated: 0
   totalEnemiesKilled: 0
   ResetButton: {fileID: 1873548347}
-  dataRecorder: {fileID: 0}
+  firebaseDataSender: {fileID: 1613451883}
 --- !u!65 &1622281306
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4299,3 +4344,4 @@ SceneRoots:
   - {fileID: 1019035937}
   - {fileID: 385062960}
   - {fileID: 536171674}
+  - {fileID: 1613451884}

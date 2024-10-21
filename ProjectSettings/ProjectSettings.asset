@@ -757,11 +757,11 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: 700dfeb4-fe79-4d12-a32d-35e226f5fdfc
+  cloudProjectId: e313d1fa-cbff-45d3-a334-d1ce563b1571
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: paired_prototype 2024-09-24_14-09-36
-  organizationId: pookiebuns
+  projectName: six_in_a_million (1)
+  organizationId: boyudu
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}

@@ -4,22 +4,26 @@ using UnityEngine;
 
 public class SpawnerController : MonoBehaviour
 {
-    public GameObject enemyPrefab;      // 敌人预制体
-    public Transform spawnPoint;        // 敌人生成点
-    public float enemyInterval = 1.0f;  // 敌人生成间隔
+    public GameObject enemyPrefab;      //
+    public Transform spawnPoint;        // spawn point
+    public float enemyInterval = 1.0f;  // enemy interval
 
-    public int currentWave = 1;         // 当前波数
-    public int maxWave = 10;            // 最大波数
-    public int enemiesPerWave = 5;      // 每波敌人数量
+    public int currentWave = 1;         // current wave 
+    public int maxWave = 10;            // max wave
+    public int enemiesPerWave = 5;      // enemies per wave
 
-    private int enemiesSpawnedInWave = 0;   // 当前波已生成的敌人数
-    private bool isSpawning = false;        // 是否正在生成敌人
+    private int enemiesSpawnedInWave = 0;   // enemies spawned in th current wave
+    private bool isSpawning = false;        // whether is spawning
 
-    public int totalEnemiesGenerated = 0;   // 生成的敌人总数
-    public int totalEnemiesKilled = 0;      // 被消灭的敌人总数
+    public int totalEnemiesGenerated = 0;   // total enemies generated
+    public int totalEnemiesKilled = 0;      // total enemies killed
 
-    public GameObject ResetButton;  // 重置按钮
-    public GameDataRecorder dataRecorder;   // 数据记录器
+    public GameObject ResetButton;  // ResetButton
+
+
+    public FirebaseDataSender firebaseDataSender;  // Reference to FirebaseDataSender
+
+
 
     void Start()
     {
@@ -34,8 +38,8 @@ public class SpawnerController : MonoBehaviour
         for (int i = 0; i < enemiesPerWave; i++)
         {
             SpawnEnemy();
-            enemiesSpawnedInWave++;
-            totalEnemiesGenerated++;  // 总生成敌人数量增加
+            enemiesSpawnedInWave++;      // enemies spawned in th current wave
+            totalEnemiesGenerated++;  // total enemies generated plus one
             yield return new WaitForSeconds(enemyInterval);
         }
 
@@ -56,7 +60,7 @@ public class SpawnerController : MonoBehaviour
             return;
         }
 
-        // 检查是否需要开始下一波
+        // Check if need to start next wave
         if (!isSpawning && GameObject.FindGameObjectsWithTag("Enemy").Length == 1)
         {
             if (currentWave < maxWave)
@@ -64,24 +68,24 @@ public class SpawnerController : MonoBehaviour
                 currentWave++;
                 StartCoroutine(SpawnWave());
             }
-
         }
 
-        // 检查胜利条件
-        if (!isSpawning  && currentWave == maxWave && totalEnemiesKilled == totalEnemiesGenerated)
+        // Check victory condition
+        if (!isSpawning && currentWave == maxWave && totalEnemiesKilled == totalEnemiesGenerated)
         {
-            // 游戏胜利
+            // Game win
             Time.timeScale = 0;
 
-            // make the game over text text alpha 1
+            // Show the win text
             GameObject.Find("Win").GetComponent<UnityEngine.UI.Text>().color = new Color(1, 0, 0, 1);
-    
 
-
-            // make the reset button visible
+            // Make the reset button visible
             ResetButton.SetActive(true);
 
-            // 防止重复触发
+            // Record game data
+            FirebaseDataSender.Instance.SendGameResult(true, currentWave, Time.timeSinceLevelLoad);
+
+            // Prevent multiple triggers
             this.enabled = false;
         }
     }
