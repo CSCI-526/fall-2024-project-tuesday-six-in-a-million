@@ -5,7 +5,6 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     // Start is called before the first frame update
-    public bool isPrefab = true;
     public int reward = 50;
     public int health = 1;
     public int moveSpeed = 5;
@@ -41,10 +40,6 @@ public class EnemyController : MonoBehaviour
     void Update()
     {
         if (Time.timeScale == 0)
-        {
-            return;
-        }
-        if (isPrefab)
         {
             return;
         }

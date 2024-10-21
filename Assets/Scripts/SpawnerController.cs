@@ -45,8 +45,8 @@ public class SpawnerController : MonoBehaviour
 
     void SpawnEnemy()
     {
-        GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position, spawnPoint.rotation);
-        enemy.GetComponent<EnemyController>().isPrefab = false;
+        GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position + new Vector3(0, -1, 0), spawnPoint.rotation);
+        enemy.SetActive(true);
         enemy.tag = "Enemy"; 
     }
 
@@ -68,7 +68,7 @@ public class SpawnerController : MonoBehaviour
         WelcomeText.gameObject.SetActive(false);
 
         // Check if need to start next wave
-        if (!isSpawning && GameObject.FindGameObjectsWithTag("Enemy").Length == 1)
+        if (!isSpawning && GameObject.FindGameObjectsWithTag("Enemy").Length == 0)
         {
             if (currentWave < maxWave)
             {
