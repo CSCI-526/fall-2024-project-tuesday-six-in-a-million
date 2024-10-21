@@ -67,7 +67,7 @@ public class EnemyController : MonoBehaviour
             // stop the game
             Time.timeScale = 0;
             // make the game over text text alpha 1
-            GameObject.Find("GameOver").GetComponent<UnityEngine.UI.Text>().color = new Color(0, 0, 0, 1);
+            GameObject.Find("GameOver").GetComponent<UnityEngine.UI.Text>().color = new Color(1, 0, 0, 1);
             // make the reset button visible
             ResetButton.SetActive(true);
         }

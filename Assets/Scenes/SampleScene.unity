@@ -215,6 +215,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flashlightPowerText: {fileID: 45940743}
+  flashlight: {fileID: 692232250}
+  flashlightMaxPower: 100
+  flashlightPower: 50
+  powerRechargeRate: 10
+  powerDrainRate: 5
+  flashlightRange: 30
 --- !u!1 &152702596
 GameObject:
   m_ObjectHideFlags: 0
@@ -747,17 +753,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   towerPrefab: {fileID: 1284891310}
   helpText: {fileID: 328511048}
-  flashlight: {fileID: 692232250}
-  flashlightPower: 100
-  powerDrainAmount: 5
-  powerRechargeRate: 5
-  powerDrainRate: 5
-  flashlightRange: 15
   towerLayer:
     serializedVersion: 2
     m_Bits: 64
   mouseSensitivity: 2
-  uiUpdater: {fileID: 45940745}
+  flashlight: {fileID: 692232253}
 --- !u!136 &274688715
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1383,6 +1383,7 @@ GameObject:
   - component: {fileID: 692232251}
   - component: {fileID: 692232250}
   - component: {fileID: 692232252}
+  - component: {fileID: 692232253}
   m_Layer: 0
   m_Name: Flashlight
   m_TagString: Untagged
@@ -1480,6 +1481,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flashlight: {fileID: 692232250}
+--- !u!114 &692232253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 692232249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1e7362654fe04209a2bd8301a83e622, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashlightPowerText: {fileID: 45940743}
+  flashlight: {fileID: 692232250}
+  flashlightMaxPower: 100
+  flashlightPower: 50
+  powerRechargeRate: 10
+  powerDrainRate: 5
+  flashlightRange: 30
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1799,6 +1819,85 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60e5efdd7ab274176a04c7351cdc8af3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &996549698
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 996549699}
+  - component: {fileID: 996549701}
+  - component: {fileID: 996549700}
+  m_Layer: 5
+  m_Name: Win
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &996549699
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 996549698}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1384375743}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 500, y: 500}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &996549700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 996549698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 100
+    m_FontStyle: 1
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 100
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: You Win!
+--- !u!222 &996549701
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 996549698}
+  m_CullTransparentMesh: 1
 --- !u!1 &1012857873
 GameObject:
   m_ObjectHideFlags: 0
@@ -2652,7 +2751,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 2137854739}
-  Flashlight: {fileID: 274688713}
   Indicator: {fileID: 851244793}
   firePoint: {fileID: 1564165911}
   attackInterval: 2
@@ -2660,6 +2758,7 @@ MonoBehaviour:
   maxChargeLevel: 10
   range: 10
   flashlightCollider: {fileID: 692232252}
+  flashlight: {fileID: 692232253}
 --- !u!1 &1384375739
 GameObject:
   m_ObjectHideFlags: 0
@@ -2755,6 +2854,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2058000872}
+  - {fileID: 996549699}
   - {fileID: 45940742}
   - {fileID: 1873548348}
   - {fileID: 1814434429}
@@ -2904,8 +3004,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 1089459831}
+  spawnPoint: {fileID: 0}
   enemyInterval: 2
-  spawnCount: 0
+  currentWave: 1
+  maxWave: 10
+  enemiesPerWave: 5
+  totalEnemiesGenerated: 0
+  totalEnemiesKilled: 0
+  ResetButton: {fileID: 0}
+  dataRecorder: {fileID: 0}
 --- !u!65 &1453243113
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3266,8 +3373,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 1089459831}
+  spawnPoint: {fileID: 1622281309}
   enemyInterval: 2
-  spawnCount: 0
+  currentWave: 1
+  maxWave: 2
+  enemiesPerWave: 5
+  totalEnemiesGenerated: 0
+  totalEnemiesKilled: 0
+  ResetButton: {fileID: 1873548347}
+  dataRecorder: {fileID: 0}
 --- !u!65 &1622281306
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4160,6 +4274,7 @@ MonoBehaviour:
   target: {fileID: 1089459831}
   speed: 100
   energyCost: 1
+  spawnerController: {fileID: 1622281305}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

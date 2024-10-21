@@ -7,6 +7,8 @@ public class BulletController : MonoBehaviour
     public GameObject target;  // The target that the bullet will move toward
     public float speed = 10.0f;  // Speed of the bullet
     public float energyCost = 1f;  // Energy cost of the bullet
+    public SpawnerController spawnerController;  // 引用 SpawnerController
+
 
     void Update()
     {
@@ -43,7 +45,11 @@ public class BulletController : MonoBehaviour
                 target.GetComponent<Renderer>().material.color = Color.red;
             }
             else if (target.GetComponent<EnemyController>().health <= 0)
-            {
+            {   
+                if (spawnerController != null)
+                {
+                    spawnerController.totalEnemiesKilled++;
+                }
                 Destroy(target);  // Destroy the target when health is 0
             }
         }
