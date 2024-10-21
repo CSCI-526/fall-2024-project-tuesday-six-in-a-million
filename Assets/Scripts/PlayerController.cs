@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,9 +14,10 @@ public class PlayerController : MonoBehaviour
 
     public GameObject towerPrefab;
     public GameObject helpText;
-    public LayerMask towerLayer;
     public float mouseSensitivity = 100.0f;  // Sensitivity for mouse movement
+    public TowerSpawner towerSpawner;  // Reference to the tower spawner script
     private float mouseX;
+    public Text alertText;
 
     public FlashlightPowerUpdater flashlight;  // Reference to the UI updater script
 
@@ -56,8 +58,8 @@ public class PlayerController : MonoBehaviour
         horizontalInput = Input.GetAxis("Horizontal");
         forwardInput = Input.GetAxis("Vertical");
 
-        // Toggle flashlight with F key
-        if (Input.GetKeyDown(KeyCode.F))
+        // Toggle flashlight with mouse click
+        if (Input.GetMouseButtonDown(0))
         {
             flashlight.toggleFlashlight();
         }
@@ -66,10 +68,7 @@ public class PlayerController : MonoBehaviour
         MovePlayer();
 
         // Create a tower when LeftShift is pressed
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            CreateTower();
-        }
+        towerSpawner.DetectSpawnTower();
 
         // Jump when Space is pressed
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
@@ -117,11 +116,5 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = true;
         }
-    }
-
-    void CreateTower()
-    {
-        GameObject tower = Instantiate(towerPrefab, transform.position + new Vector3(2, 0, 0), transform.rotation);
-        Debug.Log("Tower spawned successfully.");
     }
 }

@@ -8,6 +8,7 @@ public class TowerController : MonoBehaviour
     public GameObject bulletPrefab;  // Bullet prefab to shoot
     public GameObject Indicator;     // Reference to the indicator object
     public Transform firePoint;      // The position where bullets are fired from
+    public int goldCost = 50;        // The cost of the tower
     public float attackInterval = 2f;  // Time between each attack
     public float chargeLevel = 0f;    // The charge level of the tower
     public float maxChargeLevel = 10f;  // The maximum charge level of the tower
@@ -15,11 +16,12 @@ public class TowerController : MonoBehaviour
     public float range = 10f;       // Range within which the tower can attack enemies
     public FlashlightCollider flashlightCollider;  // Reference to the flashlight collider script
     public FlashlightPowerUpdater flashlight;  // Reference to the flashlight power updater script
+    private GameObject indicator;    // Reference to the indicator object
 
     void Start()
     {
         // Create an indicator to show tower charge level
-        Indicator = Instantiate(Indicator, transform.position + new Vector3(0, 3, 0), Quaternion.identity);
+        Indicator = Instantiate(Indicator, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
         // Set the scale to be 0.1
         Indicator.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
         if (firePoint == null)
@@ -32,6 +34,7 @@ public class TowerController : MonoBehaviour
 
     void Update()
     {
+        Indicator.transform.position = transform.position + new Vector3(0, 2, 0);  // Update the position of the indicator
         if (flashlightCollider.IsHitByFlashlight(gameObject))
         {
             ChargeTower();
@@ -59,9 +62,14 @@ public class TowerController : MonoBehaviour
     // Method to charge the tower using the flashlight
     public void ChargeTower()
     {
+        ChargeTowerCustomSpeed(flashlight.powerDrainRate);
+    }
+
+    public void ChargeTowerCustomSpeed(float chargeSpeed)
+    {
         if (chargeLevel < maxChargeLevel)
         {
-            chargeLevel += flashlight.powerDrainRate * Time.deltaTime;  // Increase the charge level
+            chargeLevel += chargeSpeed * Time.deltaTime;  // Increase the charge level
             if (chargeLevel > maxChargeLevel)
             {
                 chargeLevel = maxChargeLevel;  // Clamp the charge level to the maximum

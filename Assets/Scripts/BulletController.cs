@@ -7,7 +7,9 @@ public class BulletController : MonoBehaviour
     public GameObject target;  // The target that the bullet will move toward
     public float speed = 10.0f;  // Speed of the bullet
     public float energyCost = 1f;  // Energy cost of the bullet
+    public float goldSpawnOffset = 1f;  // Offset to spawn gold near the target
     public SpawnerController spawnerController;  // 引用 SpawnerController
+    public GameObject goldPrefab;
 
 
     void Update()
@@ -51,7 +53,18 @@ public class BulletController : MonoBehaviour
                     spawnerController.totalEnemiesKilled++;
                 }
                 Destroy(target);  // Destroy the target when health is 0
+                GenerateGold();  // Generate gold when the enemy is killed
             }
         }
+    }
+
+    void GenerateGold()
+    {
+        // pick a random location near the target
+        Vector3 randomOffset = new Vector3(Random.Range(-goldSpawnOffset, goldSpawnOffset), 0, Random.Range(-goldSpawnOffset, goldSpawnOffset));
+        // Generate gold when the enemy is killed
+        GameObject gold = Instantiate(goldPrefab, target.transform.position + randomOffset, Quaternion.identity);
+        // make the gold object active
+        gold.SetActive(true);
     }
 }

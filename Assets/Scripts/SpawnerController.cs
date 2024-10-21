@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SpawnerController : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class SpawnerController : MonoBehaviour
     public Transform spawnPoint;        // spawn point
     public float enemyInterval = 1.0f;  // enemy interval
 
-    public int currentWave = 1;         // current wave 
+    public int currentWave = 0;         // current wave 
     public int maxWave = 10;            // max wave
     public int enemiesPerWave = 5;      // enemies per wave
 
@@ -19,16 +20,12 @@ public class SpawnerController : MonoBehaviour
     public int totalEnemiesKilled = 0;      // total enemies killed
 
     public GameObject ResetButton;  // ResetButton
+    public Text WaveInfo;           // WaveInfo
+    public Text WelcomeText;        // WelcomeText
 
 
     public FirebaseDataSender firebaseDataSender;  // Reference to FirebaseDataSender
 
-
-
-    void Start()
-    {
-        StartCoroutine(SpawnWave());
-    }
 
     IEnumerator SpawnWave()
     {
@@ -60,6 +57,16 @@ public class SpawnerController : MonoBehaviour
             return;
         }
 
+        WaveInfo.text = "Wave: " + currentWave + " / " + maxWave;
+
+        // delay 3 seconds before starting the first wave
+        if (Time.timeSinceLevelLoad < 3)
+        {
+            Debug.Log("Delay 3 seconds before starting the first wave");
+            return;
+        }
+        WelcomeText.gameObject.SetActive(false);
+
         // Check if need to start next wave
         if (!isSpawning && GameObject.FindGameObjectsWithTag("Enemy").Length == 1)
         {
@@ -69,6 +76,7 @@ public class SpawnerController : MonoBehaviour
                 StartCoroutine(SpawnWave());
             }
         }
+        
 
         // Check victory condition
         if (!isSpawning && currentWave == maxWave && totalEnemiesKilled == totalEnemiesGenerated)

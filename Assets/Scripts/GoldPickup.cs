@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnergyPickup : MonoBehaviour
+public class GoldPickup : MonoBehaviour
 {
-     public float energyAmount = 20f;  // Amount of energy recovered each time
+    public int goldAmount = 10;  // Amount of gold to give the player
+    public GoldUpdater goldUpdater;  // Reference to the UI updater script
 
     // Triggered when the player touches the object
     private void OnTriggerEnter(Collider other)
@@ -14,7 +15,7 @@ public class EnergyPickup : MonoBehaviour
         if (player != null)
         {
             // Calls the player's energy recovery function
-            // player.RechargeEnergy(energyAmount);
+            goldUpdater.AddGold(goldAmount);
 
             // Objects picked up and destroyed
             Destroy(gameObject);
