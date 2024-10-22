@@ -16,7 +16,6 @@ public class PlayerController : MonoBehaviour
     public GameObject helpText;
     public float mouseSensitivity = 100.0f;  // Sensitivity for mouse movement
     public TowerSpawner towerSpawner;  // Reference to the tower spawner script
-    private float mouseX;
     public Text alertText;
 
     public FlashlightPowerUpdater flashlight;  // Reference to the UI updater script
@@ -30,11 +29,15 @@ public class PlayerController : MonoBehaviour
         print("Toggling help text");
         if (helpText.activeSelf) {
             print("Deactivating help text");
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
             helpText.SetActive(false);
             Time.timeScale = 1;
         } else {
             helpText.SetActive(true);
             Time.timeScale = 0;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
     }
 

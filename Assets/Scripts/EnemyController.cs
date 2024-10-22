@@ -66,6 +66,9 @@ public class EnemyController : MonoBehaviour
             Time.timeScale = 0;
             // make the game over text text alpha 1
             GameObject.Find("GameOver").GetComponent<UnityEngine.UI.Text>().color = new Color(1, 0, 0, 1);
+            // unlock the cursor
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
             // make the reset button visible
             ResetButton.SetActive(true);
               // Record game data

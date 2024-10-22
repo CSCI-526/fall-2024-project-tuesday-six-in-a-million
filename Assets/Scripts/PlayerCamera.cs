@@ -16,6 +16,7 @@ public class PlayerCamera : MonoBehaviour
     {
         // Initial offset based on given height and distance
         offset = new Vector3(0, height, -distance);
+        LockCursor();
     }
 
     void LateUpdate()
@@ -33,5 +34,17 @@ public class PlayerCamera : MonoBehaviour
 
         // Always make the camera look at the player
         transform.LookAt(LookAt);
+    }
+
+    void LockCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    void UnlockCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 }
