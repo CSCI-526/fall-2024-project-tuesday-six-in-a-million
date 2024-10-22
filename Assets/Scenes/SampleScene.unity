@@ -733,12 +733,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f21604ff170064833892586918e32508, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spotlightYOffset: 12
+  spotlightZOffset: -6
   towerPrefab: {fileID: 1284891310}
   helpText: {fileID: 328511048}
   mouseSensitivity: 2
   towerSpawner: {fileID: 274688720}
   alertText: {fileID: 0}
   flashlight: {fileID: 692232253}
+  spotlight: {fileID: 712598602}
 --- !u!136 &274688715
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1549,7 +1552,7 @@ GameObject:
   - component: {fileID: 712598603}
   - component: {fileID: 712598604}
   m_Layer: 0
-  m_Name: Point Light
+  m_Name: Spotlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1563,13 +1566,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 712598602}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalRotation: {x: 0.4606659, y: -0, z: -0, w: 0.8875736}
+  m_LocalPosition: {x: 0, y: 12, z: -6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 274688718}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 54.86, y: 0, z: 0}
 --- !u!108 &712598604
 Light:
   m_ObjectHideFlags: 0
@@ -1581,11 +1584,11 @@ Light:
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
-  m_Range: 20
-  m_SpotAngle: 168.8
-  m_InnerSpotAngle: 5
+  m_Color: {r: 1, g: 0.76803553, b: 0.5518868, a: 1}
+  m_Intensity: 3
+  m_Range: 30
+  m_SpotAngle: 41.3
+  m_InnerSpotAngle: 1
   m_CookieSize: 10
   m_Shadows:
     m_Type: 0

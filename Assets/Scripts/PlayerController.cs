@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
     private float horizontalInput;
     private float forwardInput;
     private Rigidbody rb;
+    public float spotlightYOffset = 7f;
+    public float spotlightZOffset = -3f;
 
     public GameObject towerPrefab;
     public GameObject helpText;
@@ -19,6 +21,7 @@ public class PlayerController : MonoBehaviour
     public Text alertText;
 
     public FlashlightPowerUpdater flashlight;  // Reference to the UI updater script
+    public GameObject spotlight;  // Reference to the spotlight object
 
     void Start()
     {
@@ -89,6 +92,21 @@ public class PlayerController : MonoBehaviour
 
         // Set flashlight rotation, but keep the X (pitch) axis fixed so it doesn't point down
         flashlight.transform.rotation = Quaternion.Euler(0, cameraEulerAngles.y, cameraEulerAngles.z);
+
+        Vector3 spotlightOffset = new Vector3(0, spotlightYOffset, spotlightZOffset);
+
+        // Calculate the new rotation for the spotlight based on the camera's Y rotation
+        Quaternion spotlightRotation = Quaternion.Euler(spotlight.transform.rotation.eulerAngles.x, cameraEulerAngles.y, spotlight.transform.rotation.eulerAngles.z);
+        
+        // Apply the rotation to the spotlight
+        spotlight.transform.rotation = spotlightRotation;
+
+        // Recalculate the spotlight's position based on the player's position and offset
+        // Rotate the offset based on the camera's Y rotation
+        Vector3 rotatedOffset = Quaternion.Euler(0, cameraEulerAngles.y, 0) * spotlightOffset;
+
+        // Set the new position of the spotlight relative to the player's position
+        spotlight.transform.position = transform.position + rotatedOffset;
     }
 
     void MovePlayer()
