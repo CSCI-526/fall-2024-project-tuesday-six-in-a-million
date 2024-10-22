@@ -22,7 +22,7 @@ public class LightTowerController : MonoBehaviour
 
     void DetectLightCollision()
     {
-        int rayCount = 12;
+        int rayCount = 36;
         float angleIncrement = 360f / rayCount;
         List<RaycastHit> allHits = new List<RaycastHit>();
 
@@ -39,9 +39,18 @@ public class LightTowerController : MonoBehaviour
             allHits.AddRange(hits);
         }
 
+        // deduplicate hits
+        HashSet<GameObject> uniqueHitObjects = new HashSet<GameObject>();
+
         // Check if any regular tower is hit by the light
         foreach (RaycastHit hit in allHits)
         {
+            GameObject hitObject = hit.collider.gameObject;
+            if (uniqueHitObjects.Contains(hitObject))
+            {
+                continue;
+            }
+            uniqueHitObjects.Add(hitObject);
             // if tower layer is hit
             if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Tower"))
             {

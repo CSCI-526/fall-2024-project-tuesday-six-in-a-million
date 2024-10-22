@@ -62,7 +62,7 @@ public class TowerController : MonoBehaviour
     // Method to charge the tower using the flashlight
     public void ChargeTower()
     {
-        ChargeTowerCustomSpeed(flashlight.powerDrainRate);
+        ChargeTowerCustomSpeed(flashlight.powerDrainRate * 0.1f);
     }
 
     public void ChargeTowerCustomSpeed(float chargeSpeed)
