@@ -2407,6 +2407,7 @@ MonoBehaviour:
   ResetButton: {fileID: 1873548347}
   flashlight: {fileID: 692232250}
   flashlightCollider: {fileID: 692232252}
+  flashlightPowerUpdater: {fileID: 692232253}
   firebaseDataSender: {fileID: 1613451883}
 --- !u!54 &1089459839
 Rigidbody:
@@ -3426,6 +3427,7 @@ MonoBehaviour:
   WaveInfo: {fileID: 0}
   WelcomeText: {fileID: 0}
   firebaseDataSender: {fileID: 0}
+  flashlightPowerUpdater: {fileID: 0}
 --- !u!65 &1453243113
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4086,6 +4088,7 @@ MonoBehaviour:
   WaveInfo: {fileID: 294780927}
   WelcomeText: {fileID: 1566644667}
   firebaseDataSender: {fileID: 1613451883}
+  flashlightPowerUpdater: {fileID: 692232253}
 --- !u!65 &1622281306
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -1,4 +1,7 @@
+using UnityEngine;
 using System.Collections;
+using System.Text;
+using UnityEngine.Networking;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,7 +15,9 @@ public class FlashlightPowerUpdater : MonoBehaviour
     public float powerRechargeRate = 10f;  // How fast flashlight recharges when off
     public float powerDrainRate = 5f;     // How fast flashlight drains when on
     public float flashlightRange = 30f;   // Range of flashlight to interact with towers
-
+    private float usageStartTime = 0f;
+    private List<float> usageDurations = new List<float>();
+    
     void Start()
     {
         UpdateFlashlightUI();
@@ -29,10 +34,14 @@ public class FlashlightPowerUpdater : MonoBehaviour
         if (!flashlight.enabled && flashlightPower > 0)
         {
             flashlight.enabled = true;
+            usageStartTime = Time.time; // Start tracking duration
+
         }
         else
         {
             flashlight.enabled = false;
+            float duration = Time.time - usageStartTime; // Calculate usage duration and add to list
+            usageDurations.Add(duration);
         }
     }
 
@@ -44,6 +53,8 @@ public class FlashlightPowerUpdater : MonoBehaviour
         if (flashlightPower <= 0) {
             flashlightPower = 0;
             flashlight.enabled = false;
+            float duration = Time.time - usageStartTime; // Calculate usage duration and add to list
+            usageDurations.Add(duration);
         }
         UpdateFlashlightUI();
     }
@@ -55,4 +66,18 @@ public class FlashlightPowerUpdater : MonoBehaviour
         }
         UpdateFlashlightUI();
     }
+
+
+    public List<float> GetUsageDurations()
+    {
+        return usageDurations;
+    }
+
+    
+    public void  AddDuration()
+    {
+        float duration = Time.time - usageStartTime; // Calculate usage duration and add to list
+        usageDurations.Add(duration);
+    }
+    
 }

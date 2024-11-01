@@ -14,6 +14,7 @@ public class EnemyController : MonoBehaviour
     public GameObject ResetButton;
     public Light flashlight;
     public FlashlightCollider flashlightCollider;
+    public FlashlightPowerUpdater flashlightPowerUpdater;
 
     // public GameDataRecorder dataRecorder;   // Data recorder
     public FirebaseDataSender firebaseDataSender;  // Reference to FirebaseDataSender
@@ -71,9 +72,11 @@ public class EnemyController : MonoBehaviour
             Cursor.visible = true;
             // make the reset button visible
             ResetButton.SetActive(true);
+            flashlightPowerUpdater.AddDuration();
+            List<float> flashlightDurations = flashlightPowerUpdater.GetUsageDurations();
               // Record game data
             int currentWave = FindObjectOfType<SpawnerController>().currentWave;
-            FirebaseDataSender.Instance.SendGameResult(false, currentWave, Time.timeSinceLevelLoad);
+            FirebaseDataSender.Instance.SendGameResult(false, currentWave, Time.timeSinceLevelLoad, flashlightDurations);
             
 
             // Prevent multiple triggers

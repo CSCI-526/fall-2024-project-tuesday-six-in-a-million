@@ -25,7 +25,7 @@ public class SpawnerController : MonoBehaviour
 
 
     public FirebaseDataSender firebaseDataSender;  // Reference to FirebaseDataSender
-
+    public FlashlightPowerUpdater flashlightPowerUpdater;
 
     IEnumerator SpawnWave()
     {
@@ -87,11 +87,14 @@ public class SpawnerController : MonoBehaviour
             // Show the win text
             GameObject.Find("Win").GetComponent<UnityEngine.UI.Text>().color = new Color(1, 0, 0, 1);
 
+            
             // Make the reset button visible
             ResetButton.SetActive(true);
 
+            List<float> flashlightDurations = flashlightPowerUpdater.GetUsageDurations();
+
             // Record game data
-            FirebaseDataSender.Instance.SendGameResult(true, currentWave, Time.timeSinceLevelLoad);
+            FirebaseDataSender.Instance.SendGameResult(true, currentWave, Time.timeSinceLevelLoad, flashlightDurations);
 
             // Prevent multiple triggers
             this.enabled = false;
