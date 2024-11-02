@@ -13,6 +13,9 @@ public class TowerSpawner : MonoBehaviour
     private int lastGeneration = -1;  // Last generation number
     private bool isShiftPressed = false;  // Whether shift is pressed
 
+    public delegate void TowerSpawnedHandler(TowerController tower);
+    public static event TowerSpawnedHandler OnTowerSpawned;
+
     public void SpawnRegularTower()
     {
         Debug.Log("Spawning regular tower");
@@ -22,7 +25,10 @@ public class TowerSpawner : MonoBehaviour
             alertText.text = "Not enough gold to spawn Regular Tower";
             return;
         }
-        Instantiate(regularTowerPrefab, transform.position + new Vector3(2, 0, 0), transform.rotation);
+        GameObject towerObject = Instantiate(regularTowerPrefab, transform.position + new Vector3(2, 0, 0), transform.rotation);
+        TowerController tower = towerObject.GetComponent<TowerController>();
+
+        OnTowerSpawned?.Invoke(tower);
         Debug.Log("Regular tower spawned");
     }
 

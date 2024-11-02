@@ -25,7 +25,9 @@ public class FirebaseDataSender : MonoBehaviour
         }
     }
 
-    public void SendGameResult(bool isWin, int finalWave, float totalGameTime, List<float> flashlightDurations)
+    public void SendGameResult(bool isWin, int finalWave, float totalGameTime,
+     List<float> flashlightDurations,
+     List<TowerData> towerData)
     {   
         // create data object
         GameResultData data = new GameResultData
@@ -35,12 +37,13 @@ public class FirebaseDataSender : MonoBehaviour
             finalWave = finalWave,
             timestamp = GetTimestamp(),
             flashlightUsageCount = flashlightDurations.Count,
-            flashlightDurations = flashlightDurations
+            flashlightDurations = flashlightDurations,
+            towerData = towerData.ToArray() 
         };
 
         //  Serialize the data object as JSON
         string json = JsonUtility.ToJson(data);
-        Debug.Log("调用 SendGameResult 方法" +json);
+        Debug.Log("call SendGameResult method" +json);
         // Starting a concatenation to send data
         StartCoroutine(PostDataToFirebase(json));
         
@@ -91,4 +94,12 @@ public class GameResultData
     public string timestamp;
     public int flashlightUsageCount;
     public List<float> flashlightDurations;
+    public TowerData[] towerData;
+}
+
+[System.Serializable]
+public class TowerData
+{
+    public float totalChargeTime;
+    public int totalKillCount;
 }

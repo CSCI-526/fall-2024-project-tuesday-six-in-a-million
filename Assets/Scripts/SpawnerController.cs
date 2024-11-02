@@ -27,6 +27,19 @@ public class SpawnerController : MonoBehaviour
     public FirebaseDataSender firebaseDataSender;  // Reference to FirebaseDataSender
     public FlashlightPowerUpdater flashlightPowerUpdater;
 
+    public List<TowerController> allTowers = new List<TowerController>();   
+
+    void Start()
+    {
+         TowerSpawner.OnTowerSpawned += AddTowerToList; // Subscribe to tower generation events
+    }
+    
+    void OnDestroy()
+    {
+        // Unsubscribe from events to prevent memory leaks
+        TowerSpawner.OnTowerSpawned -= AddTowerToList;
+    }
+
     IEnumerator SpawnWave()
     {
         isSpawning = true;
@@ -39,8 +52,13 @@ public class SpawnerController : MonoBehaviour
             totalEnemiesGenerated++;  // total enemies generated plus one
             yield return new WaitForSeconds(enemyInterval);
         }
-
         isSpawning = false;
+    }
+    
+    void AddTowerToList(TowerController tower)
+    {
+        allTowers.Add(tower);
+        Debug.Log("added tower, total tower count：" + allTowers.Count);
     }
 
     void SpawnEnemy()
@@ -48,6 +66,12 @@ public class SpawnerController : MonoBehaviour
         GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position + new Vector3(0, -1, 0), spawnPoint.rotation);
         enemy.SetActive(true);
         enemy.tag = "Enemy"; 
+
+        EnemyController enemyController = enemy.GetComponent<EnemyController>();
+        if (enemyController != null)
+        {
+            enemyController.spawnerController = this;
+        }
     }
 
     void Update()
@@ -91,10 +115,23 @@ public class SpawnerController : MonoBehaviour
             // Make the reset button visible
             ResetButton.SetActive(true);
 
+            //collect data
+            List<TowerData> towerDataList = new List<TowerData>();
+            foreach (TowerController tower in allTowers)
+            {
+                TowerData data = new TowerData
+                {
+                    totalChargeTime = tower.totalChargeTime,
+                    totalKillCount = tower.totalKillCount
+                };
+                towerDataList.Add(data);
+            }
+
+
             List<float> flashlightDurations = flashlightPowerUpdater.GetUsageDurations();
 
             // Record game data
-            FirebaseDataSender.Instance.SendGameResult(true, currentWave, Time.timeSinceLevelLoad, flashlightDurations);
+            FirebaseDataSender.Instance.SendGameResult(true, currentWave, Time.timeSinceLevelLoad, flashlightDurations,towerDataList);
 
             // Prevent multiple triggers
             this.enabled = false;

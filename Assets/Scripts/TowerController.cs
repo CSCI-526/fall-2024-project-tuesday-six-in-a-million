@@ -18,6 +18,12 @@ public class TowerController : MonoBehaviour
     public FlashlightPowerUpdater flashlight;  // Reference to the flashlight power updater script
     private GameObject indicator;    // Reference to the indicator object
 
+    public float chargingFrequency = 0f;   // Charging Frequency
+    public int totalKillCount = 0;   // Total KillCount
+
+    private float lastChargeTime = 0f;  // lastChargeTime
+    public float totalChargeTime = 0f; // totalChargeTime
+    private int chargeEvents = 0;       // count charge times
     void Start()
     {
         // Create an indicator to show tower charge level
@@ -30,6 +36,9 @@ public class TowerController : MonoBehaviour
         }
 
         attackTimer = attackInterval;  // Initialize the attack timer
+
+        lastChargeTime = Time.time;
+
     }
 
     void Update()
@@ -63,6 +72,12 @@ public class TowerController : MonoBehaviour
     public void ChargeTower()
     {
         ChargeTowerCustomSpeed(flashlight.powerDrainRate * 0.2f);
+        float currentTime = Time.time;
+        float deltaTime = currentTime - lastChargeTime;
+        totalChargeTime += deltaTime;
+        chargeEvents++;
+        chargingFrequency = chargeEvents / totalChargeTime;
+        lastChargeTime = currentTime;
     }
 
     public void ChargeTowerCustomSpeed(float chargeSpeed)
@@ -96,6 +111,8 @@ public class TowerController : MonoBehaviour
         if (closestEnemy != null && Vector3.Distance(transform.position, closestEnemy.transform.position) <= range)
         {
             bulletController.target = closestEnemy;  // Set the closest enemy as the target
+       
+            bulletController.originTower = this;
         }
         else
         {
