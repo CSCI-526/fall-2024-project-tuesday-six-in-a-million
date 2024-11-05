@@ -5,63 +5,45 @@ using UnityEngine.UI;
 
 public class SpawnerController : MonoBehaviour
 {
-    public GameObject enemyPrefab;      //
-    public Transform spawnPoint;        // spawn point
-    public float enemyInterval = 1.0f;  // enemy interval
+    public GameObject enemyPrefab;          // Enemy prefab to spawn
+    public Transform spawnPoint;            // Spawn point for enemies
+    public float enemyInterval = 1.0f;      // Interval between spawning enemies
 
-    public int currentWave = 0;         // current wave 
-    public int maxWave = 10;            // max wave
-    public int enemiesPerWave = 5;      // enemies per wave
+    public int currentWave = 0;             // Current wave number
+    public int maxWave = 10;                // Maximum number of waves
+    public int initialEnemiesPerWave = 5;   // Initial number of enemies per wave
+    public int enemiesPerWaveIncrement = 2; // Increment of enemies per wave
 
-    private int enemiesSpawnedInWave = 0;   // enemies spawned in th current wave
-    private bool isSpawning = false;        // whether is spawning
+    private int enemiesSpawnedInWave = 0;   // Number of enemies spawned in the current wave
+    private bool isSpawning = false;        // Whether the wave is currently spawning
+    private bool tutorialComplete = false;  // Track if the tutorial is complete
 
-    public int totalEnemiesGenerated = 0;   // total enemies generated
-    public int totalEnemiesKilled = 0;      // total enemies killed
+    public int totalEnemiesGenerated = 0;   // Total enemies generated
+    public int totalEnemiesKilled = 0;      // Total enemies killed
 
-    public GameObject ResetButton;  // ResetButton
-    public Text WaveInfo;           // WaveInfo
-    public Text WelcomeText;        // WelcomeText
-
+    public GameObject ResetButton;          // Reference to Reset Button
+    public Text WaveInfo;                   // Text displaying wave information
+                    // Text displaying welcome message
 
     public FirebaseDataSender firebaseDataSender;  // Reference to FirebaseDataSender
     public FlashlightPowerUpdater flashlightPowerUpdater;
 
-    public List<TowerController> allTowers = new List<TowerController>();   
+    public List<TowerController> allTowers = new List<TowerController>(); // List of all towers
 
-    void Start()
+    private void Start()
     {
-         TowerSpawner.OnTowerSpawned += AddTowerToList; // Subscribe to tower generation events
+        TowerSpawner.OnTowerSpawned += AddTowerToList; // Subscribe to tower generation events
+         // Display welcome message at start
     }
     
-    void OnDestroy()
+    private void OnDestroy()
     {
         // Unsubscribe from events to prevent memory leaks
         TowerSpawner.OnTowerSpawned -= AddTowerToList;
     }
 
-    IEnumerator SpawnWave()
-    {
-        isSpawning = true;
-        enemiesSpawnedInWave = 0;
-
-        for (int i = 0; i < enemiesPerWave; i++)
-        {
-            SpawnEnemy();
-            enemiesSpawnedInWave++;      // enemies spawned in th current wave
-            totalEnemiesGenerated++;  // total enemies generated plus one
-            yield return new WaitForSeconds(enemyInterval);
-        }
-        isSpawning = false;
-    }
-    
-    void AddTowerToList(TowerController tower)
-    {
-        allTowers.Add(tower);
-        Debug.Log("added tower, total tower count：" + allTowers.Count);
-    }
-
-    void SpawnEnemy()
+    // Method to spawn a single enemy for the tutorial phase
+    public void SpawnSingleEnemy()
     {
         GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position + new Vector3(0, -1, 0), spawnPoint.rotation);
         enemy.SetActive(true);
@@ -74,22 +56,62 @@ public class SpawnerController : MonoBehaviour
         }
     }
 
-    void Update()
+    // Coroutine to spawn a wave of enemies
+    private IEnumerator SpawnWave()
     {
-        if (Time.timeScale == 0)
+        isSpawning = true;
+        enemiesSpawnedInWave = 0;
+        int enemiesInThisWave = initialEnemiesPerWave + (currentWave - 1) * enemiesPerWaveIncrement;
+
+        for (int i = 0; i < enemiesInThisWave; i++)
         {
-            return;
+            SpawnEnemy();
+            enemiesSpawnedInWave++;      // Increase count of spawned enemies in the wave
+            totalEnemiesGenerated++;     // Increment total enemies generated
+            yield return new WaitForSeconds(enemyInterval);
         }
+        isSpawning = false;
+    }
+    
+    // Add tower to list when it is spawned
+    private void AddTowerToList(TowerController tower)
+    {
+        allTowers.Add(tower);
+        Debug.Log("Added tower, total tower count: " + allTowers.Count);
+    }
+
+    // Spawn an enemy
+    private void SpawnEnemy()
+    {
+        GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position + new Vector3(0, -1, 0), spawnPoint.rotation);
+        enemy.SetActive(true);
+        enemy.tag = "Enemy"; 
+
+        EnemyController enemyController = enemy.GetComponent<EnemyController>();
+        if (enemyController != null)
+        {
+            enemyController.spawnerController = this;
+        }
+    }
+
+    private void Update()
+    {
+        if (Time.timeScale == 0) return; // Skip if the game is paused
 
         WaveInfo.text = "Wave: " + currentWave + " / " + maxWave;
 
-        // delay 3 seconds before starting the first wave
+        // Delay 3 seconds before starting the first wave
         if (Time.timeSinceLevelLoad < 3)
         {
             Debug.Log("Delay 3 seconds before starting the first wave");
             return;
         }
-        WelcomeText.gameObject.SetActive(false);
+        
+        // Hide the welcome text after the initial delay
+        
+
+        // Only start spawning waves after the tutorial is complete
+        if (!tutorialComplete) return;
 
         // Check if need to start next wave
         if (!isSpawning && GameObject.FindGameObjectsWithTag("Enemy").Length == 0)
@@ -100,7 +122,6 @@ public class SpawnerController : MonoBehaviour
                 StartCoroutine(SpawnWave());
             }
         }
-        
 
         // Check victory condition
         if (!isSpawning && currentWave == maxWave && totalEnemiesKilled == totalEnemiesGenerated)
@@ -111,11 +132,10 @@ public class SpawnerController : MonoBehaviour
             // Show the win text
             GameObject.Find("Win").GetComponent<UnityEngine.UI.Text>().color = new Color(1, 0, 0, 1);
 
-            
             // Make the reset button visible
             ResetButton.SetActive(true);
 
-            //collect data
+            // Collect data
             List<TowerData> towerDataList = new List<TowerData>();
             foreach (TowerController tower in allTowers)
             {
@@ -127,14 +147,19 @@ public class SpawnerController : MonoBehaviour
                 towerDataList.Add(data);
             }
 
-
             List<float> flashlightDurations = flashlightPowerUpdater.GetUsageDurations();
 
             // Record game data
-            FirebaseDataSender.Instance.SendGameResult(true, currentWave, Time.timeSinceLevelLoad, flashlightDurations,towerDataList);
+            FirebaseDataSender.Instance.SendGameResult(true, currentWave, Time.timeSinceLevelLoad, flashlightDurations, towerDataList);
 
             // Prevent multiple triggers
             this.enabled = false;
         }
+    }
+
+    // Method to complete the tutorial and allow waves to start spawning
+    public void CompleteTutorial()
+    {
+        tutorialComplete = true;
     }
 }
