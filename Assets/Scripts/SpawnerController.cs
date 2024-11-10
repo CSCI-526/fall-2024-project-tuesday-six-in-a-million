@@ -14,6 +14,10 @@ public class SpawnerController : MonoBehaviour
     public int initialEnemiesPerWave = 5;   // Initial number of enemies per wave
     public int enemiesPerWaveIncrement = 2; // Increment of enemies per wave
 
+    // collect charging time in wave
+   public float[] chargeTimesPerWave;        // Charing time in one wave
+  
+
     private int enemiesSpawnedInWave = 0;   // Number of enemies spawned in the current wave
     private bool isSpawning = false;        // Whether the wave is currently spawning
     private bool tutorialComplete = false;  // Track if the tutorial is complete
@@ -35,7 +39,14 @@ public class SpawnerController : MonoBehaviour
         TowerSpawner.OnTowerSpawned += AddTowerToList; // Subscribe to tower generation events
          // Display welcome message at start
     }
-    
+
+    private void Awake()
+    {
+        // initialize charging times array
+        chargeTimesPerWave = new float[maxWave];
+
+    }
+
     private void OnDestroy()
     {
         // Unsubscribe from events to prevent memory leaks
@@ -60,6 +71,7 @@ public class SpawnerController : MonoBehaviour
     private IEnumerator SpawnWave()
     {
         isSpawning = true;
+
         enemiesSpawnedInWave = 0;
         int enemiesInThisWave = initialEnemiesPerWave + (currentWave - 1) * enemiesPerWaveIncrement;
 
@@ -118,6 +130,7 @@ public class SpawnerController : MonoBehaviour
         {
             if (currentWave < maxWave)
             {
+                
                 currentWave++;
                 StartCoroutine(SpawnWave());
             }
@@ -150,8 +163,10 @@ public class SpawnerController : MonoBehaviour
             List<float> flashlightDurations = flashlightPowerUpdater.GetUsageDurations();
 
             // Record game data
-            FirebaseDataSender.Instance.SendGameResult(true, currentWave, Time.timeSinceLevelLoad, flashlightDurations, towerDataList);
-
+            FirebaseDataSender.Instance.SendGameResult(true, currentWave, Time.timeSinceLevelLoad, 
+            flashlightDurations, towerDataList, chargeTimesPerWave);
+            
+            LogChargeTimes();
             // Prevent multiple triggers
             this.enabled = false;
         }
@@ -162,4 +177,28 @@ public class SpawnerController : MonoBehaviour
     {
         tutorialComplete = true;
     }
+
+
+
+     public void AddChargeTime(float deltaTime)
+    {
+        if (currentWave > 0 && currentWave <= maxWave)
+        {
+            chargeTimesPerWave[currentWave - 1] += deltaTime;
+            Debug.Log($"current wave : {currentWave} total charging time  ：{chargeTimesPerWave[currentWave - 1]:F2} 秒");
+        }
+        else
+        {
+            Debug.LogWarning("can't update charging time");
+        }
+    }
+
+    private void LogChargeTimes()
+    {
+        for (int i = 0; i < chargeTimesPerWave.Length; i++)
+        {
+            Debug.Log("wave " + (i + 1) + " charging time: " + chargeTimesPerWave[i] + " 秒");
+        }
+    }
+
 }

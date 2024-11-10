@@ -27,7 +27,7 @@ public class FirebaseDataSender : MonoBehaviour
 
     public void SendGameResult(bool isWin, int finalWave, float totalGameTime,
      List<float> flashlightDurations,
-     List<TowerData> towerData)
+     List<TowerData> towerData, float[] chargeTimesPerWave)
     {   
         // create data object
         GameResultData data = new GameResultData
@@ -38,7 +38,8 @@ public class FirebaseDataSender : MonoBehaviour
             timestamp = GetTimestamp(),
             flashlightUsageCount = flashlightDurations.Count,
             flashlightDurations = flashlightDurations,
-            towerData = towerData.ToArray() 
+            towerData = towerData.ToArray(),
+            chargeTimesPerWave = chargeTimesPerWave
         };
 
         //  Serialize the data object as JSON
@@ -95,6 +96,8 @@ public class GameResultData
     public int flashlightUsageCount;
     public List<float> flashlightDurations;
     public TowerData[] towerData;
+
+    public float[] chargeTimesPerWave;
 }
 
 [System.Serializable]

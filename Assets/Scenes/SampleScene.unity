@@ -3696,6 +3696,7 @@ MonoBehaviour:
   maxWave: 10
   initialEnemiesPerWave: 5
   enemiesPerWaveIncrement: 2
+  chargeTimesPerWave: []
   totalEnemiesGenerated: 0
   totalEnemiesKilled: 0
   ResetButton: {fileID: 0}
@@ -4060,6 +4061,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flashlight: {fileID: 692232253}
+  spawnerController: {fileID: 1622281305}
 --- !u!1 &1564165910
 GameObject:
   m_ObjectHideFlags: 0
@@ -4413,6 +4415,7 @@ MonoBehaviour:
   maxWave: 5
   initialEnemiesPerWave: 5
   enemiesPerWaveIncrement: 2
+  chargeTimesPerWave: []
   totalEnemiesGenerated: 0
   totalEnemiesKilled: 0
   ResetButton: {fileID: 1873548347}
@@ -5245,6 +5248,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flashlight: {fileID: 692232253}
+  spawnerController: {fileID: 1622281305}
 --- !u!65 &1875211150
 BoxCollider:
   m_ObjectHideFlags: 0

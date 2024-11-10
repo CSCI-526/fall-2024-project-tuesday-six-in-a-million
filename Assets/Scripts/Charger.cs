@@ -6,9 +6,18 @@ public class Charger : MonoBehaviour
 {
     // Start is called before the first frame update
     public FlashlightPowerUpdater flashlight;
+    
+    public SpawnerController spawnerController; // Reference to the SpawnerController script
     void Start()
     {
-        
+        if (spawnerController == null)
+        {
+            spawnerController = FindObjectOfType<SpawnerController>();
+            if (spawnerController == null)
+            {
+                Debug.LogError("SpawnerController not found! please set in Inspector。");
+            }
+        }
     }
 
     void OnCollisionStay(Collision collision)
@@ -18,6 +27,16 @@ public class Charger : MonoBehaviour
         {
             Debug.Log("Player Collision Stay");
             flashlight.Charge();
+
+            // update charging time SpawnerController
+            if (spawnerController != null && spawnerController.currentWave > 0)
+            {
+                spawnerController.AddChargeTime(Time.deltaTime);
+            }
+            else
+            {
+                Debug.LogWarning("can't update charging time int SpawnerController ");
+            }
         } 
     }
 }

@@ -88,7 +88,7 @@ public class EnemyController : MonoBehaviour
             if (spawnerController != null) 
             {
                 List<TowerController> allTowers = spawnerController.allTowers;
-                Debug.Log("塔数量：" + allTowers.Count);
+                Debug.Log("Number of Tower" + allTowers.Count);
                 foreach (TowerController tower in allTowers)
                 {
                     TowerData data = new TowerData
@@ -97,7 +97,7 @@ public class EnemyController : MonoBehaviour
                         totalKillCount = tower.totalKillCount
                     };
                     towerDataList.Add(data);
-                    Debug.Log("塔数据 - 充能频率：" + data.totalChargeTime + "，总击杀数：" + data.totalKillCount);
+                    Debug.Log("Tower Charging Time：" + data.totalChargeTime + ", Kill Count" + data.totalKillCount);
                 }
             } 
             else
@@ -108,8 +108,9 @@ public class EnemyController : MonoBehaviour
             flashlightPowerUpdater.AddDuration();
             List<float> flashlightDurations = flashlightPowerUpdater.GetUsageDurations();
             int currentWave = FindObjectOfType<SpawnerController>().currentWave;
-
-            FirebaseDataSender.Instance.SendGameResult(false, currentWave, Time.timeSinceLevelLoad, flashlightDurations, towerDataList);
+            float[] chargeTimesPerWave = FindObjectOfType<SpawnerController>().chargeTimesPerWave;
+            FirebaseDataSender.Instance.SendGameResult(false, currentWave, Time.timeSinceLevelLoad, flashlightDurations,
+             towerDataList, chargeTimesPerWave);
 
             this.enabled = false;
         }
