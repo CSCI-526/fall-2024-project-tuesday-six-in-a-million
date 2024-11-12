@@ -10,7 +10,7 @@ public class BulletController : MonoBehaviour
     public float goldSpawnOffset = 1f;  // Offset to spawn gold near the target
     public SpawnerController spawnerController;  // reference SpawnerController
     public GameObject goldPrefab;
-    public TowerController originTower; // reference the tower shoot the bullet 
+    public TowerController originTower; // reference the tower that shot the bullet
 
     void Update()
     {
@@ -31,46 +31,100 @@ public class BulletController : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        // If the bullet hits the target, destroy the bullet and deal damage to the target
+        // Check if the collision object is the target
         if (collision.gameObject == target)
         {
+            Debug.Log("Bullet hit the target!");
+
             Destroy(gameObject);  // Destroy the bullet
-            target.GetComponent<EnemyController>().health--;
 
-            // Change the color of the target based on health
-            if (target.GetComponent<EnemyController>().health == 2)
+            // Check for EnemyController or EnemyController2 on the target
+            var enemyController = target.GetComponent<EnemyController>();
+            var enemyController2 = target.GetComponent<EnemyController2>();
+
+            if (enemyController != null)
             {
-                target.GetComponent<Renderer>().material.color = Color.yellow;
+                ProcessEnemyHit(enemyController);
             }
-            else if (target.GetComponent<EnemyController>().health == 1)
+            else if (enemyController2 != null)
             {
-                target.GetComponent<Renderer>().material.color = Color.red;
+                ProcessEnemyHit(enemyController2);
             }
-            else if (target.GetComponent<EnemyController>().health <= 0)
-            {   
-                if (spawnerController != null)
-                {
-                    spawnerController.totalEnemiesKilled++;
-                }
-
-                if (originTower != null)
-                {
-                    originTower.totalKillCount++; //increase tower kill count
-                }
-
-                Destroy(target);  // Destroy the target when health is 0
-                GenerateGold();  // Generate gold when the enemy is killed
+            else
+            {
+                Debug.LogError("No compatible EnemyController found on the target.");
             }
         }
     }
 
-    void GenerateGold()
+    private void ProcessEnemyHit(EnemyController enemy)
     {
-        // pick a random location near the target
+        enemy.health--;
+        Debug.Log("Enemy health after hit: " + enemy.health);
+
+        UpdateEnemyColor(enemy);
+
+        if (enemy.health <= 0)
+        {
+            KillEnemy(enemy.gameObject);
+        }
+    }
+
+    private void ProcessEnemyHit(EnemyController2 enemy)
+    {
+        enemy.health--;
+        Debug.Log("Enemy health after hit: " + enemy.health);
+
+        UpdateEnemyColor(enemy);
+
+        if (enemy.health <= 0)
+        {
+            KillEnemy(enemy.gameObject);
+        }
+    }
+
+    private void UpdateEnemyColor(MonoBehaviour enemy)
+    {
+        // Update color based on health
+        Renderer renderer = enemy.GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            int health = (enemy is EnemyController) ? ((EnemyController)enemy).health : ((EnemyController2)enemy).health;
+            if (health == 2)
+            {
+                renderer.material.color = Color.yellow;
+            }
+            else if (health == 1)
+            {
+                renderer.material.color = Color.red;
+            }
+        }
+    }
+
+    private void KillEnemy(GameObject enemy)
+    {
+        Debug.Log("Enemy has died.");
+
+        if (spawnerController != null)
+        {
+            spawnerController.totalEnemiesKilled++;
+        }
+
+        if (originTower != null)
+        {
+            originTower.totalKillCount++; // Increase tower kill count
+        }
+
+        Destroy(enemy);  // Destroy the enemy
+        GenerateGold(enemy);  // Generate gold when the enemy is killed
+    }
+
+    private void GenerateGold(GameObject enemy)
+    {
+        // Pick a random location near the enemy
         Vector3 randomOffset = new Vector3(Random.Range(-goldSpawnOffset, goldSpawnOffset), 0, Random.Range(-goldSpawnOffset, goldSpawnOffset));
         // Generate gold when the enemy is killed
-        GameObject gold = Instantiate(goldPrefab, target.transform.position + randomOffset, Quaternion.identity);
-        // make the gold object active
+        GameObject gold = Instantiate(goldPrefab, enemy.transform.position + randomOffset, Quaternion.identity);
         gold.SetActive(true);
     }
 }
