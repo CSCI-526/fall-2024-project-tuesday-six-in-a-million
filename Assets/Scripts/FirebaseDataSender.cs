@@ -25,13 +25,14 @@ public class FirebaseDataSender : MonoBehaviour
         }
     }
 
-    public void SendGameResult(bool isWin, int finalWave, float totalGameTime,
+    public void SendGameResult(int level, bool isWin, int finalWave, float totalGameTime,
      List<float> flashlightDurations,
      List<TowerData> towerData, float[] chargeTimesPerWave)
     {   
         // create data object
         GameResultData data = new GameResultData
-        {
+        {   
+            level = level,
             totalGameTime = totalGameTime,
             result = isWin ? "Win" : "Lose",
             finalWave = finalWave,
@@ -88,7 +89,8 @@ public class FirebaseDataSender : MonoBehaviour
 
 [System.Serializable]
 public class GameResultData
-{
+{   
+    public int level;
     public float totalGameTime;
     public string result;
     public int finalWave;

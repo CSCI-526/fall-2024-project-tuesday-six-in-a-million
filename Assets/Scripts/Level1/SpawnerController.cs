@@ -135,10 +135,11 @@ public class SpawnerController : MonoBehaviour
                 StartCoroutine(SpawnWave());
             }
         }
+        Debug.Log($"Victory condition check: isSpawning={isSpawning}, currentWave={currentWave}, maxWave={maxWave}, totalEnemiesKilled={totalEnemiesKilled}, totalEnemiesGenerated={totalEnemiesGenerated}");
 
         // Check victory condition
-        if (!isSpawning && currentWave == maxWave && totalEnemiesKilled == totalEnemiesGenerated)
-        {
+        if (!isSpawning && currentWave == maxWave && totalEnemiesKilled == (totalEnemiesGenerated + 1))
+        {   //  totalEnemiesGenerated + 1 because tutrial need one
             // Game win
             Time.timeScale = 0;
 
@@ -163,7 +164,7 @@ public class SpawnerController : MonoBehaviour
             List<float> flashlightDurations = flashlightPowerUpdater.GetUsageDurations();
 
             // Record game data
-            FirebaseDataSender.Instance.SendGameResult(true, currentWave, Time.timeSinceLevelLoad, 
+            FirebaseDataSender.Instance.SendGameResult(1, true, currentWave, Time.timeSinceLevelLoad, 
             flashlightDurations, towerDataList, chargeTimesPerWave);
             
             LogChargeTimes();

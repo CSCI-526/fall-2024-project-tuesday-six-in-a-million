@@ -109,7 +109,7 @@ public class EnemyController : MonoBehaviour
             List<float> flashlightDurations = flashlightPowerUpdater.GetUsageDurations();
             int currentWave = FindObjectOfType<SpawnerController>().currentWave;
             float[] chargeTimesPerWave = FindObjectOfType<SpawnerController>().chargeTimesPerWave;
-            FirebaseDataSender.Instance.SendGameResult(false, currentWave, Time.timeSinceLevelLoad, flashlightDurations,
+            FirebaseDataSender.Instance.SendGameResult(1, false, currentWave, Time.timeSinceLevelLoad, flashlightDurations,
              towerDataList, chargeTimesPerWave);
 
             this.enabled = false;

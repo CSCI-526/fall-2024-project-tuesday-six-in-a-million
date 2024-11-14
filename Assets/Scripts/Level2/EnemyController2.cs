@@ -143,7 +143,7 @@ public class EnemyController2 : MonoBehaviour
             // 记录游戏数据
             if (FirebaseDataSender.Instance != null)
             {
-                FirebaseDataSender.Instance.SendGameResult(isWin, currentWave, Time.timeSinceLevelLoad, flashlightDurations,
+                FirebaseDataSender.Instance.SendGameResult(2, isWin, currentWave, Time.timeSinceLevelLoad, flashlightDurations,
                     towerDataList, chargeTimesPerWave);
                 Debug.Log("SendGameResult called successfully.");
             }

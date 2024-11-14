@@ -221,7 +221,7 @@ public class SecondLevelSpawnerController : MonoBehaviour
         // 记录游戏数据
         if (FirebaseDataSender.Instance != null)
         {
-            FirebaseDataSender.Instance.SendGameResult(true, currentWave, Time.timeSinceLevelLoad, flashlightDurations, towerDataList, chargeTimesPerWave);
+            FirebaseDataSender.Instance.SendGameResult(2, true, currentWave, Time.timeSinceLevelLoad, flashlightDurations, towerDataList, chargeTimesPerWave);
             Debug.Log("SendGameResult called successfully.");
         }
         else
