@@ -23,18 +23,46 @@ public class SecondLevelSpawnerController : MonoBehaviour
 
     public GameObject ResetButton;
     public Text WaveInfo;
-    public FirebaseDataSender firebaseDataSender;
     public FlashlightPowerUpdater flashlightPowerUpdater;
     public FlashlightCollider flashlightCollider;
     public List<TowerController> allTowers = new List<TowerController>();
 
     private bool isSpawning = false;
 
-    private void Start()
+    private void Awake()
     {
         chargeTimesPerWave = new float[maxWave];
+    }
+
+    private void Start()
+    {
+        TowerSpawner.OnTowerSpawned += AddTowerToList; // 订阅塔生成事件
         StartCoroutine(LevelSequence());
     }
+
+    private void OnDestroy()
+    {
+        TowerSpawner.OnTowerSpawned -= AddTowerToList; // 取消订阅
+    }
+
+    private void AddTowerToList(TowerController tower)
+    {
+        allTowers.Add(tower);
+        Debug.Log("Added tower, total tower count: " + allTowers.Count);
+    }
+    public void AddChargeTime(float deltaTime)
+{
+    if (currentWave > 0 && currentWave <= maxWave)
+    {
+        chargeTimesPerWave[currentWave - 1] += deltaTime;
+        Debug.Log($"Current wave: {currentWave}, total charging time: {chargeTimesPerWave[currentWave - 1]:F2} seconds");
+    }
+    else
+    {
+        Debug.LogWarning("Cannot update charging time");
+    }
+}
+
 
     private IEnumerator LevelSequence()
     {
@@ -119,7 +147,9 @@ public class SecondLevelSpawnerController : MonoBehaviour
             enemyController.spawnerController = this;
             enemyController.Base1 = Base1;
             enemyController.Base2 = Base2;
-            enemyController.flashlightCollider = flashlightCollider;  // Make sure flashlightCollider is assigned
+            enemyController.flashlightCollider = flashlightCollider;
+            enemyController.flashlightPowerUpdater = flashlightPowerUpdater;
+            enemyController.ResetButton = ResetButton;
 
             // Set enemy color based on health
             SetEnemyColorBasedOnHealth(enemyController);
@@ -159,14 +189,21 @@ public class SecondLevelSpawnerController : MonoBehaviour
     private void EndLevel()
     {
         Debug.Log("Level complete");
-        GameObject.Find("Win").GetComponent<UnityEngine.UI.Text>().color = new Color(1, 0, 0, 1);
-        ResetButton.SetActive(true);
 
+        // 调用数据收集方法
         CollectAnalyticsData();
     }
 
     private void CollectAnalyticsData()
     {
+        // 游戏胜利，暂停游戏
+        Time.timeScale = 0;
+
+        // 显示胜利文本
+        GameObject.Find("Win").GetComponent<UnityEngine.UI.Text>().color = new Color(1, 0, 0, 1);
+        ResetButton.SetActive(true);
+
+        // 收集塔的数据
         List<TowerData> towerDataList = new List<TowerData>();
         foreach (TowerController tower in allTowers)
         {
@@ -178,7 +215,18 @@ public class SecondLevelSpawnerController : MonoBehaviour
             towerDataList.Add(data);
         }
 
+        // 收集手电筒使用时间
         List<float> flashlightDurations = flashlightPowerUpdater.GetUsageDurations();
-        firebaseDataSender.SendGameResult(true, currentWave, Time.timeSinceLevelLoad, flashlightDurations, towerDataList, chargeTimesPerWave);
+
+        // 记录游戏数据
+        if (FirebaseDataSender.Instance != null)
+        {
+            FirebaseDataSender.Instance.SendGameResult(true, currentWave, Time.timeSinceLevelLoad, flashlightDurations, towerDataList, chargeTimesPerWave);
+            Debug.Log("SendGameResult called successfully.");
+        }
+        else
+        {
+            Debug.LogError("FirebaseDataSender Instance is null.");
+        }
     }
 }

@@ -1210,7 +1210,6 @@ MonoBehaviour:
   totalEnemiesKilled: 0
   ResetButton: {fileID: 1873548347}
   WaveInfo: {fileID: 294780927}
-  firebaseDataSender: {fileID: 1613451883}
   flashlightPowerUpdater: {fileID: 692232253}
   flashlightCollider: {fileID: 692232252}
   allTowers: []
@@ -2772,7 +2771,6 @@ MonoBehaviour:
   flashlight: {fileID: 692232250}
   flashlightCollider: {fileID: 692232252}
   flashlightPowerUpdater: {fileID: 692232253}
-  firebaseDataSender: {fileID: 1613451883}
   spawnerController: {fileID: 1622281310}
   highlightColor: {r: 0.9433962, g: 0.031149892, b: 0.031149892, a: 1}
 --- !u!1 &1136724933
@@ -4124,7 +4122,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1485789465}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eabda14814aa9439bae73fb60283de4a, type: 3}
+  m_Script: {fileID: 11500000, guid: 488ce01fe609a41ac99416c03ce8dca7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   flashlight: {fileID: 692232253}
@@ -4443,7 +4441,6 @@ MonoBehaviour:
   totalEnemiesKilled: 0
   ResetButton: {fileID: 1873548347}
   WaveInfo: {fileID: 294780927}
-  firebaseDataSender: {fileID: 1613451883}
   flashlightPowerUpdater: {fileID: 692232253}
   flashlightCollider: {fileID: 692232252}
   allTowers: []
@@ -5258,7 +5255,7 @@ GameObject:
   - component: {fileID: 1875211152}
   - component: {fileID: 1875211151}
   - component: {fileID: 1875211150}
-  - component: {fileID: 1875211149}
+  - component: {fileID: 1875211154}
   m_Layer: 0
   m_Name: Charging Station (1)
   m_TagString: Untagged
@@ -5266,20 +5263,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1875211149
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1875211148}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eabda14814aa9439bae73fb60283de4a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  flashlight: {fileID: 692232253}
-  spawnerController: {fileID: 1453243112}
 --- !u!65 &1875211150
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5367,6 +5350,20 @@ Transform:
   - {fileID: 1663168286}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &1875211154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875211148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 488ce01fe609a41ac99416c03ce8dca7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashlight: {fileID: 692232253}
+  spawnerController: {fileID: 1453243112}
 --- !u!1 &1919382833
 GameObject:
   m_ObjectHideFlags: 0

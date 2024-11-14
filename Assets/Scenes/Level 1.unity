@@ -3954,6 +3954,7 @@ GameObject:
   - component: {fileID: 1485789467}
   - component: {fileID: 1485789466}
   - component: {fileID: 1485789470}
+  - component: {fileID: 1485789471}
   m_Layer: 0
   m_Name: Charging Station
   m_TagString: Untagged
@@ -4058,6 +4059,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eabda14814aa9439bae73fb60283de4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1485789471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1485789465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bd01d1306cd543d58c4edee997a5996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   flashlight: {fileID: 692232253}
@@ -5227,7 +5240,7 @@ GameObject:
   - component: {fileID: 1875211152}
   - component: {fileID: 1875211151}
   - component: {fileID: 1875211150}
-  - component: {fileID: 1875211149}
+  - component: {fileID: 1875211154}
   m_Layer: 0
   m_Name: Charging Station (1)
   m_TagString: Untagged
@@ -5235,20 +5248,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1875211149
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1875211148}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eabda14814aa9439bae73fb60283de4a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  flashlight: {fileID: 692232253}
-  spawnerController: {fileID: 1622281305}
 --- !u!65 &1875211150
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5336,6 +5335,20 @@ Transform:
   - {fileID: 1663168286}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &1875211154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875211148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bd01d1306cd543d58c4edee997a5996, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashlight: {fileID: 692232253}
+  spawnerController: {fileID: 1622281305}
 --- !u!1 &1919382833
 GameObject:
   m_ObjectHideFlags: 0
