@@ -27,6 +27,12 @@ public class PlayerCamera : MonoBehaviour
         // Update the offset by rotating it around the Y-axis of the player
         offset = Quaternion.AngleAxis(horizontalInput, Vector3.up) * offset;
 
+        if (player == null)
+        {
+            UnlockCursor();
+            return;
+        }
+
         // Set the camera's position to follow the player with the updated offset
         transform.position = player.transform.position + offset;
 

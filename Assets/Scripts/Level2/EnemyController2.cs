@@ -26,24 +26,6 @@ public class EnemyController2 : MonoBehaviour
         HighlightEnemy();
     }
 
-    private void Update()
-    {
-        if (Time.timeScale == 0) return;
-
-        if (Base1 == null || Base2 == null)
-        {
-            Debug.LogError("Base1 or Base2 is not assigned in EnemyController2."); // Debug: Missing base reference
-            return;
-        }
-
-        GameObject targetBase = Vector3.Distance(transform.position, Base1.transform.position) < Vector3.Distance(transform.position, Base2.transform.position)
-            ? Base1
-            : Base2;
-
-        int adjustedSpeed = flashlightCollider != null && flashlightCollider.IsHitByFlashlight(gameObject) ? moveSpeed / 2 : moveSpeed;
-        transform.position = Vector3.MoveTowards(transform.position, targetBase.transform.position, adjustedSpeed * Time.deltaTime);
-    }
-
     private void HighlightEnemy()
     {
         if (enemyRenderer != null)

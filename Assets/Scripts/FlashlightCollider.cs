@@ -7,6 +7,10 @@ public class FlashlightCollider : MonoBehaviour
     public Light flashlight;
     public bool IsHitByFlashlight(GameObject other)
     {
+        if (flashlight == null)
+        {
+            return false;
+        }
         Ray forward_ray = new Ray(flashlight.transform.position, flashlight.transform.forward);
         // Increment by 10 degrees clockwise
         Ray forward_10_ray = new Ray(flashlight.transform.position, Quaternion.Euler(0, 10, 0) * flashlight.transform.forward);

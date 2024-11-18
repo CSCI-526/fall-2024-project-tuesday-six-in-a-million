@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
 
     public FlashlightPowerUpdater flashlight;  // Reference to the UI updater script
     public GameObject spotlight;  // Reference to the spotlight object
+    public GameObject ResetButton;  // Reference to the reset button object
 
     void Start()
     {
@@ -32,8 +33,10 @@ public class PlayerController : MonoBehaviour
         print("Toggling help text");
         if (helpText.activeSelf) {
             print("Deactivating help text");
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            if (!ResetButton.activeSelf) {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
             helpText.SetActive(false);
             Time.timeScale = 1;
         } else {
