@@ -7,6 +7,11 @@ public class LevelSelector : MonoBehaviour
         SceneManager.LoadScene(levelName);
     }
 
+    public void BackToMainMenu()
+    {
+        SceneManager.LoadScene("Main Menu");
+    }
+
     public void LoadLevelByIndex(int levelIndex)
     {
         SceneManager.LoadScene(levelIndex);
