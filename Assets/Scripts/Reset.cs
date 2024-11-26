@@ -19,8 +19,13 @@ public class Reset : MonoBehaviour
 
     public void ResetGame()
     {
+        StartCoroutine(ResetGameCoroutine());
+    }
+     private IEnumerator ResetGameCoroutine()
+    {
         Scene scene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(scene.name);
-        Time.timeScale = 1;
+        yield return null; // 等待一幀，確保加載穩定
+        Time.timeScale = 1; // 重置遊戲時間
     }
 }
