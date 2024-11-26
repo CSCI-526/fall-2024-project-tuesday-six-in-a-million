@@ -16,7 +16,6 @@ public class TowerController : MonoBehaviour
     public float range = 10f;       // Range within which the tower can attack enemies
     public FlashlightCollider flashlightCollider;  // Reference to the flashlight collider script
     public FlashlightPowerUpdater flashlight;  // Reference to the flashlight power updater script
-    private GameObject indicator;    // Reference to the indicator object
 
     public float chargingFrequency = 0f;   // Charging Frequency
     public int totalKillCount = 0;   // Total KillCount
@@ -24,53 +23,78 @@ public class TowerController : MonoBehaviour
     private float lastChargeTime = 0f;  // lastChargeTime
     public float totalChargeTime = 0f; // totalChargeTime
     private int chargeEvents = 0;       // count charge times
+
     void Start()
     {
-        // Create an indicator to show tower charge level
-        Indicator = Instantiate(Indicator, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
-        // Set the scale to be 0.1
-        Indicator.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
-        if (firePoint == null)
+        if (Indicator != null)
         {
-            Debug.LogError("FirePoint is not assigned to " + gameObject.name);
+            Indicator = Instantiate(Indicator, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
+            Indicator.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+        }
+        else
+        {
+            Debug.LogWarning("Indicator prefab is not assigned.");
         }
 
-        attackTimer = attackInterval;  // Initialize the attack timer
+        if (firePoint == null)
+        {
+            Debug.LogError($"FirePoint is not assigned to {gameObject.name}.");
+        }
 
+        attackTimer = attackInterval;
         lastChargeTime = Time.time;
-
     }
 
     void Update()
     {
-        Indicator.transform.position = transform.position + new Vector3(0, 2, 0);  // Update the position of the indicator
-        if (flashlightCollider.IsHitByFlashlight(gameObject))
+        if (Indicator != null)
+        {
+            Indicator.transform.position = transform.position + new Vector3(0, 2, 0);
+        }
+
+        if (flashlightCollider != null && flashlightCollider.IsHitByFlashlight(gameObject))
         {
             ChargeTower();
         }
-        // Only allow the tower to attack if it has been charged
+
+        if (bulletPrefab == null || firePoint == null)
+        {
+            Debug.LogWarning($"bulletPrefab or firePoint is missing in {gameObject.name}.");
+            return;
+        }
+
         float bulletEnergyCost = bulletPrefab.GetComponent<BulletController>().energyCost;
         attackTimer -= Time.deltaTime;
-        if (firePoint != null && chargeLevel >= bulletEnergyCost)
+
+        if (chargeLevel >= bulletEnergyCost)
         {
             if (attackTimer <= 0f)
             {
                 FireBullet();
                 chargeLevel -= bulletEnergyCost;  // Deduct energy cost from the charge level
-                attackTimer = attackInterval;  // Reset the attack timer
+                attackTimer = attackInterval;    // Reset the attack timer
             }
         }
 
-        // Change the text to show the charge level
-        Text chargeText = Indicator.GetComponentInChildren<UnityEngine.UI.Text>();
-        chargeText.text = chargeLevel.ToString("F2");
-        // Set the canvas to face away from the camera
-        Indicator.transform.LookAt(Indicator.transform.position + Camera.main.transform.rotation * Vector3.forward, Camera.main.transform.rotation * Vector3.up);
+        if (Indicator != null)
+        {
+            Text chargeText = Indicator.GetComponentInChildren<Text>();
+            if (chargeText != null)
+            {
+                chargeText.text = chargeLevel.ToString("F2");
+                Indicator.transform.LookAt(Indicator.transform.position + Camera.main.transform.rotation * Vector3.forward, Camera.main.transform.rotation * Vector3.up);
+            }
+        }
     }
 
-    // Method to charge the tower using the flashlight
     public void ChargeTower()
     {
+        if (flashlight == null)
+        {
+            Debug.LogWarning($"Flashlight reference is missing in {gameObject.name}.");
+            return;
+        }
+
         ChargeTowerCustomSpeed(flashlight.powerDrainRate * 0.2f);
         float currentTime = Time.time;
         float deltaTime = currentTime - lastChargeTime;
@@ -84,45 +108,48 @@ public class TowerController : MonoBehaviour
     {
         if (chargeLevel < maxChargeLevel)
         {
-            chargeLevel += chargeSpeed * Time.deltaTime;  // Increase the charge level
+            chargeLevel += chargeSpeed * Time.deltaTime;
             if (chargeLevel > maxChargeLevel)
             {
-                chargeLevel = maxChargeLevel;  // Clamp the charge level to the maximum
+                chargeLevel = maxChargeLevel;
             }
         }
     }
 
-    // Fire bullets at the target
     void FireBullet()
     {
-        if (bulletPrefab == null)
+        Debug.Log($"Attempting to fire bullet from {gameObject.name}");
+
+        if (bulletPrefab == null || firePoint == null)
         {
-            Debug.LogError("No bullet prefab assigned to " + gameObject.name);
+            Debug.LogWarning($"Cannot fire bullet: Missing bulletPrefab or firePoint in {gameObject.name}.");
             return;
         }
 
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-        bullet.transform.localScale = bulletPrefab.transform.localScale;  // Ensure the bullet retains its correct scale
-
-        // Find the nearest enemy and assign it as the bullet's target if within range
         BulletController bulletController = bullet.GetComponent<BulletController>();
-        GameObject closestEnemy = FindClosestEnemy();
+        if (bulletController == null)
+        {
+            Debug.LogError("BulletController component is missing on bulletPrefab.");
+            Destroy(bullet);
+            return;
+        }
 
+        GameObject closestEnemy = FindClosestEnemy();
         if (closestEnemy != null && Vector3.Distance(transform.position, closestEnemy.transform.position) <= range)
         {
             bulletController.target = closestEnemy;  // Set the closest enemy as the target
-       
-            bulletController.originTower = this;
+            bulletController.originTower = this;    // Set reference to this tower
+            Debug.Log($"Bullet fired at enemy: {closestEnemy.name}");
         }
         else
         {
-            Destroy(bullet);  // Destroy the bullet if no enemy is within range
-            chargeLevel += bulletController.energyCost;  // Refund the energy cost
             Debug.Log("No enemy in range, bullet destroyed.");
+            Destroy(bullet);
+            chargeLevel += bulletController.energyCost;  // Refund the energy cost
         }
     }
 
-    // Find the closest enemy to target
     GameObject FindClosestEnemy()
     {
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
@@ -133,12 +160,19 @@ public class TowerController : MonoBehaviour
         foreach (GameObject enemy in enemies)
         {
             float distanceToEnemy = Vector3.Distance(currentPosition, enemy.transform.position);
+            Debug.Log($"Checking enemy: {enemy.name}, Distance: {distanceToEnemy}");
+
             if (distanceToEnemy < minDistance)
             {
                 closestEnemy = enemy;
                 minDistance = distanceToEnemy;
             }
         }
+
+        if (closestEnemy != null)
+            Debug.Log($"Closest enemy: {closestEnemy.name}, Distance: {minDistance}");
+        else
+            Debug.Log("No enemies found in range.");
 
         return closestEnemy;
     }

@@ -9,8 +9,8 @@ public class SecondLevelSpawnerController : MonoBehaviour
     public Transform spawnPoint1;
     public Transform spawnPoint2;
     public float enemyInterval = 1.0f;
-    public int initialEnemiesPerWave = 5;
-    public int enemiesPerWaveIncrement = 2;
+    public int initialEnemiesPerWave = 3;
+    public int enemiesPerWaveIncrement = 1;
 
     public GameObject Base1;
     public GameObject Base2;
@@ -36,13 +36,13 @@ public class SecondLevelSpawnerController : MonoBehaviour
 
     private void Start()
     {
-        TowerSpawner.OnTowerSpawned += AddTowerToList; // 订阅塔生成事件
+        TowerSpawner.OnTowerSpawned += AddTowerToList; // Subscribe to tower generation events
         StartCoroutine(LevelSequence());
     }
 
     private void OnDestroy()
     {
-        TowerSpawner.OnTowerSpawned -= AddTowerToList; // 取消订阅
+        TowerSpawner.OnTowerSpawned -= AddTowerToList; // Unsubscribe
     }
 
     private void AddTowerToList(TowerController tower)
@@ -50,19 +50,19 @@ public class SecondLevelSpawnerController : MonoBehaviour
         allTowers.Add(tower);
         Debug.Log("Added tower, total tower count: " + allTowers.Count);
     }
-    public void AddChargeTime(float deltaTime)
-{
-    if (currentWave > 0 && currentWave <= maxWave)
-    {
-        chargeTimesPerWave[currentWave - 1] += deltaTime;
-        Debug.Log($"Current wave: {currentWave}, total charging time: {chargeTimesPerWave[currentWave - 1]:F2} seconds");
-    }
-    else
-    {
-        Debug.LogWarning("Cannot update charging time");
-    }
-}
 
+    public void AddChargeTime(float deltaTime)
+    {
+        if (currentWave > 0 && currentWave <= maxWave)
+        {
+            chargeTimesPerWave[currentWave - 1] += deltaTime;
+            Debug.Log($"Current wave: {currentWave}, total charging time: {chargeTimesPerWave[currentWave - 1]:F2} seconds");
+        }
+        else
+        {
+            Debug.LogWarning("Cannot update charging time");
+        }
+    }
 
     private IEnumerator LevelSequence()
     {
@@ -75,37 +75,34 @@ public class SecondLevelSpawnerController : MonoBehaviour
 
             Debug.Log($"Starting wave {currentWave}");
 
-            // Configure enemy health for each wave
-            if (currentWave < 4)
-            {
-                enemyPrefab.GetComponent<EnemyController2>().health = 1; // Set health to 1 for early waves
-            }
-            else
-            {
-                enemyPrefab.GetComponent<EnemyController2>().health = 2; // Set health to 2 for later waves
-            }
-
             if (currentWave == 1)
             {
-                yield return StartCoroutine(SpawnWave(spawnPoint1));
+                yield return StartCoroutine(SpawnWave(spawnPoint1, initialEnemiesPerWave));
             }
             else if (currentWave == 2)
             {
-                yield return StartCoroutine(SpawnWave(spawnPoint2));
+                yield return StartCoroutine(SpawnWave(spawnPoint2, initialEnemiesPerWave));
             }
             else if (currentWave == 3)
             {
-                StartCoroutine(SpawnWave(spawnPoint1));
+                StartCoroutine(SpawnWave(spawnPoint1, initialEnemiesPerWave + 1));
                 yield return new WaitForSeconds(5);
-                yield return StartCoroutine(SpawnWave(spawnPoint2));
+                yield return StartCoroutine(SpawnWave(spawnPoint2, initialEnemiesPerWave + 1));
             }
-            else if (currentWave >= 4)
+            else if (currentWave == 4)
             {
-                StartCoroutine(SpawnWave(spawnPoint1));
+                StartCoroutine(SpawnWave(spawnPoint1, initialEnemiesPerWave + 2));
                 yield return new WaitForSeconds(5);
-                yield return StartCoroutine(SpawnWave(spawnPoint2));
+                yield return StartCoroutine(SpawnWave(spawnPoint2, initialEnemiesPerWave + 2));
+            }
+            else if (currentWave == 5)
+            {
+                StartCoroutine(SpawnWave(spawnPoint1, initialEnemiesPerWave + 3));
+                yield return new WaitForSeconds(5);
+                yield return StartCoroutine(SpawnWave(spawnPoint2, initialEnemiesPerWave + 3));
             }
 
+            // Wait until all enemies in the wave are defeated
             while (isSpawning || GameObject.FindGameObjectsWithTag("Enemy").Length > 0)
             {
                 yield return null;
@@ -117,10 +114,9 @@ public class SecondLevelSpawnerController : MonoBehaviour
         EndLevel();
     }
 
-    private IEnumerator SpawnWave(Transform spawnPoint)
+    private IEnumerator SpawnWave(Transform spawnPoint, int enemiesInWave)
     {
         isSpawning = true;
-        int enemiesInWave = initialEnemiesPerWave + (currentWave - 1) * enemiesPerWaveIncrement;
 
         Debug.Log($"Wave {currentWave}: Spawning {enemiesInWave} enemies at {spawnPoint.name}");
 
@@ -137,7 +133,7 @@ public class SecondLevelSpawnerController : MonoBehaviour
     {
         GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position, spawnPoint.rotation);
         enemy.tag = "Enemy";
-        enemy.SetActive(true);  // Ensure the enemy is active
+        enemy.SetActive(true); // Ensure the enemy is active
 
         Debug.Log($"Spawned enemy at position: {spawnPoint.position} with active state: {enemy.activeSelf}");
 
@@ -190,20 +186,19 @@ public class SecondLevelSpawnerController : MonoBehaviour
     {
         Debug.Log("Level complete");
 
-        // 调用数据收集方法
         CollectAnalyticsData();
     }
 
     private void CollectAnalyticsData()
     {
-        // 游戏胜利，暂停游戏
+        // Pause the game on victory
         Time.timeScale = 0;
 
-        // 显示胜利文本
+        // Display victory text
         GameObject.Find("Win").GetComponent<UnityEngine.UI.Text>().color = new Color(1, 0, 0, 1);
         ResetButton.SetActive(true);
 
-        // 收集塔的数据
+        // Collect tower data
         List<TowerData> towerDataList = new List<TowerData>();
         foreach (TowerController tower in allTowers)
         {
@@ -215,10 +210,10 @@ public class SecondLevelSpawnerController : MonoBehaviour
             towerDataList.Add(data);
         }
 
-        // 收集手电筒使用时间
+        // Collect flashlight usage durations
         List<float> flashlightDurations = flashlightPowerUpdater.GetUsageDurations();
 
-        // 记录游戏数据
+        // Record game data
         if (FirebaseDataSender.Instance != null)
         {
             FirebaseDataSender.Instance.SendGameResult(2, true, currentWave, Time.timeSinceLevelLoad, flashlightDurations, towerDataList, chargeTimesPerWave);

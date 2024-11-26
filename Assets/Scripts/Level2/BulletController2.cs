@@ -8,16 +8,13 @@ public class BulletController2 : MonoBehaviour
     public float speed = 10.0f;  // Speed of the bullet
     public float energyCost = 1f;  // Energy cost of the bullet
     public float goldSpawnOffset = 1f;  // Offset to spawn gold near the target
-    public SecondLevelSpawnerController spawnerController;  // reference SecondLevelSpawnerController
+    public SpawnerController spawnerController;  // Reference to SpawnerController
     public GameObject goldPrefab;
-    public TowerController originTower; // reference the tower shoot the bullet 
+    public TowerController originTower;  // Reference to the tower that shot the bullet
 
-    void Update()
+    private void Update()
     {
-        if (Time.timeScale == 0)
-        {
-            return;
-        }
+        if (Time.timeScale == 0) return;
 
         if (target == null)
         {
@@ -29,48 +26,92 @@ public class BulletController2 : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
     }
 
-    void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        // If the bullet hits the target, destroy the bullet and deal damage to the target
-        if (collision.gameObject == target)
+        // Check if the bullet hits the target
+        if (other.gameObject == target)
         {
-            Destroy(gameObject);  // Destroy the bullet
-            target.GetComponent<EnemyController2>().health--;
-
-            // Change the color of the target based on health
-            if (target.GetComponent<EnemyController2>().health == 2)
-            {
-                target.GetComponent<Renderer>().material.color = Color.yellow;
-            }
-            else if (target.GetComponent<EnemyController2>().health == 1)
-            {
-                target.GetComponent<Renderer>().material.color = Color.red;
-            }
-            else if (target.GetComponent<EnemyController2>().health <= 0)
-            {   
-                if (spawnerController != null)
-                {
-                    spawnerController.totalEnemiesKilled++;
-                }
-
-                if (originTower != null)
-                {
-                    originTower.totalKillCount++; //increase tower kill count
-                }
-
-                Destroy(target);  // Destroy the target when health is 0
-                GenerateGold();  // Generate gold when the enemy is killed
-            }
+            Debug.Log("Bullet hit the target!");
+            ProcessTargetHit(other.gameObject);
         }
     }
 
-    void GenerateGold()
+    private void ProcessTargetHit(GameObject enemy)
     {
-        // pick a random location near the target
-        Vector3 randomOffset = new Vector3(Random.Range(-goldSpawnOffset, goldSpawnOffset), 0, Random.Range(-goldSpawnOffset, goldSpawnOffset));
-        // Generate gold when the enemy is killed
-        GameObject gold = Instantiate(goldPrefab, target.transform.position + randomOffset, Quaternion.identity);
-        // make the gold object active
+        // Destroy the bullet
+        Destroy(gameObject);
+
+        // Check for EnemyController or EnemyController2
+        var enemyController = enemy.GetComponent<EnemyController>();
+        var enemyController2 = enemy.GetComponent<EnemyController2>();
+
+        if (enemyController != null)
+        {
+            ApplyDamageAndProcess(enemyController, enemy);
+        }
+        else if (enemyController2 != null)
+        {
+            ApplyDamageAndProcess(enemyController2, enemy);
+        }
+        else
+        {
+            Debug.LogError("No compatible EnemyController found on the target.");
+        }
+    }
+
+    private void ApplyDamageAndProcess(MonoBehaviour enemyController, GameObject enemy)
+    {
+        int health = (enemyController is EnemyController)
+            ? ((EnemyController)enemyController).health--
+            : ((EnemyController2)enemyController).health--;
+
+        Debug.Log($"Enemy health after hit: {health}");
+
+        UpdateEnemyColor(enemyController);
+
+        if (health <= 0)
+        {
+            KillEnemy(enemy);
+        }
+    }
+
+    private void UpdateEnemyColor(MonoBehaviour enemyController)
+    {
+        Renderer renderer = enemyController.GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            int health = (enemyController is EnemyController)
+                ? ((EnemyController)enemyController).health
+                : ((EnemyController2)enemyController).health;
+
+            if (health == 2)
+                renderer.material.color = Color.yellow;
+            else if (health == 1)
+                renderer.material.color = Color.red;
+        }
+    }
+
+    private void KillEnemy(GameObject enemy)
+    {
+        Debug.Log("Enemy has been killed.");
+
+        // Increment kill counts
+        if (spawnerController != null) spawnerController.totalEnemiesKilled++;
+        if (originTower != null) originTower.totalKillCount++;
+
+        Destroy(enemy);  // Destroy the enemy
+        GenerateGold(enemy);  // Generate gold when the enemy is killed
+    }
+
+    private void GenerateGold(GameObject enemy)
+    {
+        Vector3 randomOffset = new Vector3(
+            Random.Range(-goldSpawnOffset, goldSpawnOffset),
+            0,
+            Random.Range(-goldSpawnOffset, goldSpawnOffset)
+        );
+
+        GameObject gold = Instantiate(goldPrefab, enemy.transform.position + randomOffset, Quaternion.identity);
         gold.SetActive(true);
     }
 }
