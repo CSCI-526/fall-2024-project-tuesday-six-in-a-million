@@ -124,21 +124,21 @@ def calculate_wave_statistics(df):
 
         for wave in range(1, TOTAL_WAVES + 1):
             wave_times = level_data[f'chargeTimePerWave_{wave}'].dropna()
-            wave_times = wave_times[wave_times > 0]  # 只考虑大于0的充电时间
+            wave_times = wave_times[wave_times > 0]  # only consider charging time greater than 0
 
             if len(wave_times) > 0:
                 stats_records.append({
                     'Level': level,
                     'Wave': wave,
-                    'Games_Count': total_games,  # 使用总游戏次数
+                    'Games_Count': total_games,  # total game times
                     'Avg_Charge_Time': wave_times.mean() if len(wave_times) > 0 else 0,
                     'Min_Charge_Time': wave_times.min() if len(wave_times) > 0 else 0,
                     'Max_Charge_Time': wave_times.max() if len(wave_times) > 0 else 0,
                     'Median_Charge_Time': wave_times.median() if len(wave_times) > 0 else 0,
-                    'Success_Rate': success_rate  # 使用计算好的成功率
+                    'Success_Rate': success_rate  # calculate success rate
                 })
             else:
-                # 如果没有有效的充电时间数据，仍然记录基本信息
+                # if doesn't have valid data, record data
                 stats_records.append({
                     'Level': level,
                     'Wave': wave,
