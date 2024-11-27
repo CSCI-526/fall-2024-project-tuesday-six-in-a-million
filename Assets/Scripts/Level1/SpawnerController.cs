@@ -22,6 +22,8 @@ public class SpawnerController : MonoBehaviour
     private bool isSpawning = false;        // Whether the wave is currently spawning
     private bool tutorialComplete = false;  // Track if the tutorial is complete
 
+    private bool isGameOver = false;  // 添加一个标志来标记游戏是否结束
+    
     public int totalEnemiesGenerated = 0;   // Total enemies generated
     public int totalEnemiesKilled = 0;      // Total enemies killed
 
@@ -108,7 +110,7 @@ public class SpawnerController : MonoBehaviour
 
     private void Update()
     {
-        if (Time.timeScale == 0) return; // Skip if the game is paused
+           if (isGameOver) return; // Skip if the game is paused
 
         WaveInfo.text = "Wave: " + currentWave + " / " + maxWave;
 
@@ -138,13 +140,18 @@ public class SpawnerController : MonoBehaviour
         Debug.Log($"Victory condition check: isSpawning={isSpawning}, currentWave={currentWave}, maxWave={maxWave}, totalEnemiesKilled={totalEnemiesKilled}, totalEnemiesGenerated={totalEnemiesGenerated}");
 
         // Check victory condition
-        if (!isSpawning && currentWave == maxWave && totalEnemiesKilled == (totalEnemiesGenerated + 1))
+        if (!isGameOver && !isSpawning && currentWave == maxWave && totalEnemiesKilled == (totalEnemiesGenerated + 1))
         {   //  totalEnemiesGenerated + 1 because tutrial need one
             // Game win
+            isGameOver = true;
             Time.timeScale = 0;
 
             // Show the win text
             GameObject.Find("Win").GetComponent<UnityEngine.UI.Text>().color = new Color(1, 0, 0, 1);
+
+            // Unlock cursor
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
 
             // Make the reset button visible
             ResetButton.SetActive(true);
@@ -168,8 +175,7 @@ public class SpawnerController : MonoBehaviour
             flashlightDurations, towerDataList, chargeTimesPerWave);
             
             LogChargeTimes();
-            // Prevent multiple triggers
-            this.enabled = false;
+
         }
     }
 

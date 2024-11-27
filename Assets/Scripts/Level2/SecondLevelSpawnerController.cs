@@ -16,7 +16,7 @@ public class SecondLevelSpawnerController : MonoBehaviour
     public GameObject Base2;
 
     public int currentWave = 0;
-    public int maxWave = 5;
+    public int maxWave = 1;
     public float[] chargeTimesPerWave;
     public int totalEnemiesGenerated = 0;
     public int totalEnemiesKilled = 0;
@@ -193,6 +193,9 @@ public class SecondLevelSpawnerController : MonoBehaviour
     {
         // Pause the game on victory
         Time.timeScale = 0;
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
 
         // Display victory text
         GameObject.Find("Win").GetComponent<UnityEngine.UI.Text>().color = new Color(1, 0, 0, 1);

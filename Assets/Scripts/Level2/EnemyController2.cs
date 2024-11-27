@@ -69,7 +69,7 @@ public class EnemyController2 : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         // Handle collision with bases
-        if (collision.gameObject == Base1 || collision.gameObject == Base2)
+        if (collision.gameObject == Base1 || collision.gameObject == Base2 || collision.gameObject.CompareTag("Player"))
         {
             Debug.Log($"Enemy collided with {collision.gameObject.name}. Game Over."); // Debug: Collision detected
 
@@ -132,6 +132,9 @@ public class EnemyController2 : MonoBehaviour
         {
             ResetButton.SetActive(true);
         }
+        //unlock cursor
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
 
         GameObject gameOverText = GameObject.Find(isWin ? "Win" : "GameOver");
         if (gameOverText != null)

@@ -5971,6 +5971,7 @@ GameObject:
   - component: {fileID: 1873548351}
   - component: {fileID: 1873548350}
   - component: {fileID: 1873548349}
+  - component: {fileID: 1873548352}
   m_Layer: 5
   m_Name: Button (Legacy)
   m_TagString: Untagged
@@ -6092,6 +6093,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1873548347}
   m_CullTransparentMesh: 1
+--- !u!114 &1873548352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1873548347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60e5efdd7ab274176a04c7351cdc8af3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1875211148
 GameObject:
   m_ObjectHideFlags: 0
@@ -6935,6 +6948,7 @@ MonoBehaviour:
   energyCost: 1
   goldSpawnOffset: 5
   spawnerController: {fileID: 1622281305}
+  secondLevelSpawnerController: {fileID: 0}
   goldPrefab: {fileID: 1019035932}
   originTower: {fileID: 1284891316}
 --- !u!1660057539 &9223372036854775807
