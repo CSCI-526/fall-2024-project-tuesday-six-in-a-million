@@ -1694,7 +1694,7 @@ MonoBehaviour:
   moveSpeed: 5
   Base1: {fileID: 2012880739}
   Base2: {fileID: 0}
-  ResetButton: {fileID: 0}
+  ResetButton: {fileID: 1873548347}
   flashlight: {fileID: 692232250}
   flashlightCollider: {fileID: 692232252}
   flashlightPowerUpdater: {fileID: 692232253}
@@ -2431,7 +2431,7 @@ MonoBehaviour:
   moveSpeed: 5
   Base1: {fileID: 2012880739}
   Base2: {fileID: 0}
-  ResetButton: {fileID: 0}
+  ResetButton: {fileID: 1873548347}
   flashlight: {fileID: 692232250}
   flashlightCollider: {fileID: 692232252}
   flashlightPowerUpdater: {fileID: 692232253}
@@ -3886,7 +3886,7 @@ MonoBehaviour:
   moveSpeed: 5
   Base1: {fileID: 2012880739}
   Base2: {fileID: 0}
-  ResetButton: {fileID: 0}
+  ResetButton: {fileID: 1873548347}
   flashlight: {fileID: 692232250}
   flashlightCollider: {fileID: 692232252}
   flashlightPowerUpdater: {fileID: 692232253}
@@ -7417,6 +7417,7 @@ MonoBehaviour:
   energyCost: 1
   goldSpawnOffset: 5
   spawnerController: {fileID: 0}
+  secondLevelSpawnerController: {fileID: 0}
   goldPrefab: {fileID: 1019035932}
   originTower: {fileID: 1284891316}
 --- !u!1660057539 &9223372036854775807
