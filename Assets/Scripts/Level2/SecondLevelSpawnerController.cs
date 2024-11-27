@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class SecondLevelSpawnerController : MonoBehaviour
 {
@@ -200,6 +201,12 @@ public class SecondLevelSpawnerController : MonoBehaviour
         // Display victory text
         GameObject.Find("Win").GetComponent<UnityEngine.UI.Text>().color = new Color(1, 0, 0, 1);
         ResetButton.SetActive(true);
+        
+
+        //
+        string sceneName = SceneManager.GetActiveScene().name;
+        int levelNumber = int.Parse(sceneName.Replace("Level ", ""));
+        Debug.Log("Level number: " + levelNumber);
 
         // Collect tower data
         List<TowerData> towerDataList = new List<TowerData>();
@@ -219,7 +226,7 @@ public class SecondLevelSpawnerController : MonoBehaviour
         // Record game data
         if (FirebaseDataSender.Instance != null)
         {
-            FirebaseDataSender.Instance.SendGameResult(2, true, currentWave, Time.timeSinceLevelLoad, flashlightDurations, towerDataList, chargeTimesPerWave);
+            FirebaseDataSender.Instance.SendGameResult(levelNumber, true, currentWave, Time.timeSinceLevelLoad, flashlightDurations, towerDataList, chargeTimesPerWave);
             Debug.Log("SendGameResult called successfully.");
         }
         else

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnemyController2 : MonoBehaviour
 {
@@ -136,6 +137,11 @@ public class EnemyController2 : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
+        // Get level number
+        string sceneName = SceneManager.GetActiveScene().name;
+        int levelNumber = int.Parse(sceneName.Replace("Level ", ""));
+        Debug.Log("Level number: " + levelNumber);
+
         GameObject gameOverText = GameObject.Find(isWin ? "Win" : "GameOver");
         if (gameOverText != null)
         {
@@ -177,7 +183,7 @@ public class EnemyController2 : MonoBehaviour
             // Record game data
             if (FirebaseDataSender.Instance != null)
             {
-                FirebaseDataSender.Instance.SendGameResult(2, isWin, currentWave, Time.timeSinceLevelLoad, flashlightDurations,
+                FirebaseDataSender.Instance.SendGameResult(levelNumber, isWin, currentWave, Time.timeSinceLevelLoad, flashlightDurations,
                     towerDataList, chargeTimesPerWave);
                 Debug.Log("SendGameResult called successfully.");
             }
