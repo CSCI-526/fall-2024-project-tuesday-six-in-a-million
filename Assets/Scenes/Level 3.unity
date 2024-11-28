@@ -5320,7 +5320,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flashlight: {fileID: 692232253}
-  spawnerController: {fileID: 0}
+  spawnerController: {fileID: 1622281310}
 --- !u!1 &1549689059
 GameObject:
   m_ObjectHideFlags: 0
@@ -6639,7 +6639,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flashlight: {fileID: 692232253}
-  spawnerController: {fileID: 0}
+  spawnerController: {fileID: 1622281310}
 --- !u!1 &1885594222
 GameObject:
   m_ObjectHideFlags: 0
