@@ -112,6 +112,13 @@ public class EnemyController : MonoBehaviour
             FirebaseDataSender.Instance.SendGameResult(1, false, currentWave, Time.timeSinceLevelLoad, flashlightDurations,
              towerDataList, chargeTimesPerWave);
 
+            
+            PlayerController playerController = FindObjectOfType<PlayerController>();
+            if (playerController != null)
+            {
+                playerController.GameOver();
+            }
+
             this.enabled = false;
         }
     }

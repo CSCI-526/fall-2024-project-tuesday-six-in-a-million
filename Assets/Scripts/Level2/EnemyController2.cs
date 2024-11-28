@@ -196,7 +196,15 @@ public class EnemyController2 : MonoBehaviour
         {
             Debug.LogError("FlashlightPowerUpdater reference is missing in EnemyController2.");
         }
+        
+        // Game over
+        PlayerController playerController = FindObjectOfType<PlayerController>();
+            if (playerController != null)
+            {
+                playerController.GameOver();
+            }
 
+            this.enabled = false;
         // Prevent multiple triggers
         this.enabled = false;
     }

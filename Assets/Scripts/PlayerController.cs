@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
     private float speed = 20.0f;
     private float jumpForce = 150.0f;
     private bool isGrounded = true;
+
+    private bool isGameOver = false;    // Track if the game is over
     private float horizontalInput;
     private float forwardInput;
     private Rigidbody rb;
@@ -38,7 +40,10 @@ public class PlayerController : MonoBehaviour
                 Cursor.visible = false;
             }
             helpText.SetActive(false);
-            Time.timeScale = 1;
+            if (!isGameOver)
+            {
+                Time.timeScale = 1;
+            }
         } else {
             helpText.SetActive(true);
             Time.timeScale = 0;
@@ -53,11 +58,10 @@ public class PlayerController : MonoBehaviour
         {
             ToggleHelp();
         }
-        if (Time.timeScale == 0)
-        {
-            return;  // Prevent movement and interactions if game is paused
-        }
-
+        if (Time.timeScale == 0 || isGameOver)
+            {
+                return;
+            }
         // Toggle help text with h key
 
         // Handle flashlight rotation
@@ -141,4 +145,11 @@ public class PlayerController : MonoBehaviour
             isGrounded = true;
         }
     }
+
+        public void GameOver()
+    {
+        isGameOver = true;
+    }
+
+
 }

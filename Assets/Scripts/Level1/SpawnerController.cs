@@ -174,8 +174,12 @@ public class SpawnerController : MonoBehaviour
             FirebaseDataSender.Instance.SendGameResult(1, true, currentWave, Time.timeSinceLevelLoad, 
             flashlightDurations, towerDataList, chargeTimesPerWave);
             
-            LogChargeTimes();
-
+            PlayerController playerController = FindObjectOfType<PlayerController>();
+            if (playerController != null)
+            {
+                playerController.GameOver();
+            }
+            this.enabled = false;
         }
     }
 
@@ -197,14 +201,6 @@ public class SpawnerController : MonoBehaviour
         else
         {
             Debug.LogWarning("can't update charging time");
-        }
-    }
-
-    private void LogChargeTimes()
-    {
-        for (int i = 0; i < chargeTimesPerWave.Length; i++)
-        {
-            Debug.Log("wave " + (i + 1) + " charging time: " + chargeTimesPerWave[i] + " 秒");
         }
     }
 

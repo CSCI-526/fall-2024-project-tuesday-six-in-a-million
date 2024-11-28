@@ -233,5 +233,15 @@ public class SecondLevelSpawnerController : MonoBehaviour
         {
             Debug.LogError("FirebaseDataSender Instance is null.");
         }
+
+        PlayerController playerController = FindObjectOfType<PlayerController>();
+            if (playerController != null)
+            {
+                playerController.GameOver();
+            }
+
+            this.enabled = false;
+        // Prevent multiple triggers
+        this.enabled = false;
     }
 }
