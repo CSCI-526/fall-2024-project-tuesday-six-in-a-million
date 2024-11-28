@@ -934,7 +934,7 @@ MonoBehaviour:
   alertText: {fileID: 0}
   flashlight: {fileID: 692232253}
   spotlight: {fileID: 712598602}
-  ResetButton: {fileID: 0}
+  ResetButton: {fileID: 1873548347}
 --- !u!136 &274688715
 CapsuleCollider:
   m_ObjectHideFlags: 0
