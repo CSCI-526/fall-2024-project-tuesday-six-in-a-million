@@ -11,6 +11,7 @@ public class EnemyController : MonoBehaviour
     public GameObject Base2;
     public GameObject Player;
     public GameObject ResetButton;
+    public GameObject LevelSelectButton;
     public Light flashlight;
     public FlashlightCollider flashlightCollider;
     public FlashlightPowerUpdater flashlightPowerUpdater;
@@ -83,6 +84,7 @@ public class EnemyController : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             ResetButton.SetActive(true);
+            LevelSelectButton.SetActive(true);
 
             List<TowerData> towerDataList = new List<TowerData>();
             if (spawnerController != null) 

@@ -11,6 +11,7 @@ public class EnemyController2 : MonoBehaviour
     public GameObject Base1;
     public GameObject Base2;
     public GameObject ResetButton;
+    public GameObject LevelSelectButton;
 
     public Light flashlight;
     public FlashlightCollider flashlightCollider;
@@ -133,6 +134,7 @@ public class EnemyController2 : MonoBehaviour
         {
             ResetButton.SetActive(true);
         }
+        LevelSelectButton.SetActive(true);
         //unlock cursor
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;

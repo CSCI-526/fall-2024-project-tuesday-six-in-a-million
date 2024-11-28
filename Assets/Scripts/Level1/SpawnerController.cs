@@ -28,6 +28,7 @@ public class SpawnerController : MonoBehaviour
     public int totalEnemiesKilled = 0;      // Total enemies killed
 
     public GameObject ResetButton;          // Reference to Reset Button
+    public GameObject LevelSelectButton;    // Reference to Level Select Button
     public Text WaveInfo;                   // Text displaying wave information
                     // Text displaying welcome message
 
@@ -155,6 +156,7 @@ public class SpawnerController : MonoBehaviour
 
             // Make the reset button visible
             ResetButton.SetActive(true);
+            LevelSelectButton.SetActive(true); // Show level select button
 
             // Collect data
             List<TowerData> towerDataList = new List<TowerData>();

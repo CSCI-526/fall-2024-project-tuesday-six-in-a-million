@@ -23,6 +23,7 @@ public class SecondLevelSpawnerController : MonoBehaviour
     public int totalEnemiesKilled = 0;
 
     public GameObject ResetButton;
+    public GameObject LevelSelectButton;    // Reference to Level Select Button
     public Text WaveInfo;
     public FlashlightPowerUpdater flashlightPowerUpdater;
     public FlashlightCollider flashlightCollider;
@@ -201,7 +202,7 @@ public class SecondLevelSpawnerController : MonoBehaviour
         // Display victory text
         GameObject.Find("Win").GetComponent<UnityEngine.UI.Text>().color = new Color(1, 0, 0, 1);
         ResetButton.SetActive(true);
-        
+        LevelSelectButton.SetActive(true);
 
         //
         string sceneName = SceneManager.GetActiveScene().name;
@@ -240,7 +241,6 @@ public class SecondLevelSpawnerController : MonoBehaviour
                 playerController.GameOver();
             }
 
-            this.enabled = false;
         // Prevent multiple triggers
         this.enabled = false;
     }
