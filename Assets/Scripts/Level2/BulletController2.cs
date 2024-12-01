@@ -105,13 +105,21 @@ public class BulletController2 : MonoBehaviour
 
     private void GenerateGold(GameObject enemy)
     {
+        // Define a random offset (only for X and Z axes)
         Vector3 randomOffset = new Vector3(
-            Random.Range(-goldSpawnOffset, goldSpawnOffset),
-            0,
-            Random.Range(-goldSpawnOffset, goldSpawnOffset)
+            Random.Range(-goldSpawnOffset, goldSpawnOffset), // Random offset on the X-axis
+            0,                                              // Fixed height for the ground (Y-axis)
+            Random.Range(-goldSpawnOffset, goldSpawnOffset)  // Random offset on the Z-axis
+        );
+        // Calculate the final spawn position
+        Vector3 goldSpawnPosition = new Vector3(
+            enemy.transform.position.x + randomOffset.x,  // Enemy's X position with random offset
+            -0.5f,                                        // Fixed Y height for ground level
+            enemy.transform.position.z + randomOffset.z   // Enemy's Z position with random offset
         );
 
-        GameObject gold = Instantiate(goldPrefab, enemy.transform.position + randomOffset, Quaternion.identity);
-        gold.SetActive(true);
+        // Instantiate the gold prefab at the calculated position
+        GameObject gold = Instantiate(goldPrefab, goldSpawnPosition, Quaternion.identity);
+        gold.SetActive(true); // Ensure the gold object is active
     }
 }

@@ -12,6 +12,7 @@ public class EnemyController2 : MonoBehaviour
     public GameObject Base2;
     public GameObject ResetButton;
     public GameObject LevelSelectButton;
+  
 
     public Light flashlight;
     public FlashlightCollider flashlightCollider;
@@ -109,6 +110,8 @@ public class EnemyController2 : MonoBehaviour
             Destroy(collision.gameObject);
         }
     }
+
+
 
     private void UpdateEnemyColor()
     {
