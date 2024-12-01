@@ -5,6 +5,7 @@ public class LevelSelectManager : MonoBehaviour
 {
     public Button level1Button;
     public Button level2Button;
+    public Button level3Button;
     public Button quitButton;
 
     void Start()
@@ -12,11 +13,13 @@ public class LevelSelectManager : MonoBehaviour
         // Set the button texts
         SetButtonText(level1Button, "Level 1");
         SetButtonText(level2Button, "Level 2");
+        SetButtonText(level3Button, "Level 3");
         SetButtonText(quitButton, "Quit");
 
         // Set up button click listeners if needed
         level1Button.onClick.AddListener(() => LoadLevel("Level1"));
         level2Button.onClick.AddListener(() => LoadLevel("Level2"));
+        level3Button.onClick.AddListener(() => LoadLevel("Level3"));
         quitButton.onClick.AddListener(QuitGame);
     }
 
