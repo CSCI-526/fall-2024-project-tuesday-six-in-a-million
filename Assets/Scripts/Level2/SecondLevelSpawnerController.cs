@@ -79,29 +79,29 @@ public class SecondLevelSpawnerController : MonoBehaviour
 
             if (currentWave == 1)
             {
-                yield return StartCoroutine(SpawnWave(spawnPoint1, initialEnemiesPerWave));
+                yield return StartCoroutine(SpawnWave(spawnPoint1, initialEnemiesPerWave, 1));
             }
             else if (currentWave == 2)
             {
-                yield return StartCoroutine(SpawnWave(spawnPoint2, initialEnemiesPerWave));
+                yield return StartCoroutine(SpawnWave(spawnPoint2, initialEnemiesPerWave, 2));
             }
             else if (currentWave == 3)
             {
-                StartCoroutine(SpawnWave(spawnPoint1, initialEnemiesPerWave + 1));
+                StartCoroutine(SpawnWave(spawnPoint1, initialEnemiesPerWave + 1, 1));
                 yield return new WaitForSeconds(5);
-                yield return StartCoroutine(SpawnWave(spawnPoint2, initialEnemiesPerWave + 1));
+                yield return StartCoroutine(SpawnWave(spawnPoint2, initialEnemiesPerWave + 1, 2));
             }
             else if (currentWave == 4)
             {
-                StartCoroutine(SpawnWave(spawnPoint1, initialEnemiesPerWave + 2));
+                StartCoroutine(SpawnWave(spawnPoint1, initialEnemiesPerWave + 2, 1));
                 yield return new WaitForSeconds(5);
-                yield return StartCoroutine(SpawnWave(spawnPoint2, initialEnemiesPerWave + 2));
+                yield return StartCoroutine(SpawnWave(spawnPoint2, initialEnemiesPerWave + 2, 2));
             }
             else if (currentWave == 5)
             {
-                StartCoroutine(SpawnWave(spawnPoint1, initialEnemiesPerWave + 3));
+                StartCoroutine(SpawnWave(spawnPoint1, initialEnemiesPerWave + 3, 1));
                 yield return new WaitForSeconds(5);
-                yield return StartCoroutine(SpawnWave(spawnPoint2, initialEnemiesPerWave + 3));
+                yield return StartCoroutine(SpawnWave(spawnPoint2, initialEnemiesPerWave + 3, 2));
             }
 
             // Wait until all enemies in the wave are defeated
@@ -116,7 +116,7 @@ public class SecondLevelSpawnerController : MonoBehaviour
         EndLevel();
     }
 
-    private IEnumerator SpawnWave(Transform spawnPoint, int enemiesInWave)
+    private IEnumerator SpawnWave(Transform spawnPoint, int enemiesInWave, int health = 2)
     {
         isSpawning = true;
 
@@ -124,14 +124,14 @@ public class SecondLevelSpawnerController : MonoBehaviour
 
         for (int i = 0; i < enemiesInWave; i++)
         {
-            SpawnEnemy(spawnPoint);
+            SpawnEnemy(spawnPoint, health);
             yield return new WaitForSeconds(enemyInterval);
         }
 
         isSpawning = false;
     }
 
-    private void SpawnEnemy(Transform spawnPoint)
+    private void SpawnEnemy(Transform spawnPoint, int health = 2)
     {
         GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position, spawnPoint.rotation);
         enemy.tag = "Enemy";
@@ -143,6 +143,7 @@ public class SecondLevelSpawnerController : MonoBehaviour
         if (enemyController != null)
         {
             enemyController.spawnerController = this;
+            enemyController.health = health;
             enemyController.Base1 = Base1;
             enemyController.Base2 = Base2;
             enemyController.flashlightCollider = flashlightCollider;

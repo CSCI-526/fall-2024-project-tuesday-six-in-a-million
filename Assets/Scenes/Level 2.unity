@@ -1197,7 +1197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 1089459831}
-  spawnPoint1: {fileID: 1622281309}
+  spawnPoint1: {fileID: 400545902}
   spawnPoint2: {fileID: 400545902}
   enemyInterval: 1
   initialEnemiesPerWave: 5
@@ -4808,7 +4808,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 1089459831}
   spawnPoint1: {fileID: 1622281309}
-  spawnPoint2: {fileID: 400545902}
+  spawnPoint2: {fileID: 1622281309}
   enemyInterval: 1
   initialEnemiesPerWave: 3
   enemiesPerWaveIncrement: 1

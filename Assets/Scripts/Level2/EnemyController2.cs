@@ -33,6 +33,7 @@ public class EnemyController2 : MonoBehaviour
     {
         if (Time.timeScale == 0) return;
 
+        UpdateEnemyColor();
         // Ensure Base1 and Base2 are assigned
         if (Base1 == null || Base2 == null)
         {
@@ -93,9 +94,6 @@ public class EnemyController2 : MonoBehaviour
             // Reduce health
             health--;
 
-            // Update enemy color based on health
-            UpdateEnemyColor();
-
             // Check if the enemy is dead
             if (health <= 0)
             {
@@ -117,7 +115,15 @@ public class EnemyController2 : MonoBehaviour
     {
         if (enemyRenderer != null)
         {
-            if (health == 1)
+            if (health == 3) {
+                enemyRenderer.material.color = Color.green; // Change to green when full health
+            }
+            else if (health == 2)
+            {
+                enemyRenderer.material.color = Color.yellow; // Change to highlight color when full health
+            }
+            
+            else if (health == 1)
             {
                 enemyRenderer.material.color = Color.red; // Change to red when one hit left
             }
