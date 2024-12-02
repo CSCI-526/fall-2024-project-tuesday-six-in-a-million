@@ -16,13 +16,21 @@ def process_game_data(json_path):
     records = []
 
     for record_id, record_data in data["gameResults"].items():
+        # Extract level
+        level = record_data.get("level")
+        if not level or level == "unknown":
+            level = "3"  # Replace missing or 'unknown' levels with '3'
+        else:
+            level = str(level)
+
+        # Main record
         main_record = {
             "id": record_id,
-            "level": record_data.get("level", "unknown"),  # Add level field
+            "level": level,  # Updated level field
             "finalWave": record_data.get("finalWave"),
             "flashlightUsageCount": record_data.get("flashlightUsageCount"),
             "result": record_data.get("result"),
-            "timestamp": record_data.get("timestamp"),
+            # Removed the 'timestamp' field
             "totalGameTime": record_data.get("totalGameTime"),
         }
 
@@ -57,6 +65,17 @@ def process_game_data(json_path):
     # Convert to DataFrame
     df = pd.DataFrame(records)
 
+    # **Delete the 'timestamp' column**
+    # Since we didn't include 'timestamp' in main_record, this step ensures it's removed if present
+    if 'timestamp' in df.columns:
+        df = df.drop(columns=['timestamp'])
+
+    # Convert 'level' to integer for proper sorting
+    df['level'] = df['level'].astype(int)
+
+    # **Sort the DataFrame by 'level'**
+    df = df.sort_values(by='level')
+
     # Calculate wave statistics per level
     wave_stats = calculate_wave_statistics(df)
 
@@ -82,7 +101,7 @@ def process_game_data(json_path):
         df.to_excel(writer, sheet_name='All_Data', index=False)
 
         # Split and save data by level
-        for level in df['level'].unique():
+        for level in sorted(df['level'].unique()):
             level_df = df[df['level'] == level]
             sheet_name = f'Level_{level}'
             level_df.to_excel(writer, sheet_name=sheet_name, index=False)
@@ -116,7 +135,7 @@ def process_game_data(json_path):
 def calculate_wave_statistics(df):
     stats_records = []
 
-    for level in df['level'].unique():
+    for level in sorted(df['level'].unique()):
         level_data = df[df['level'] == level]
         total_games = len(level_data)
         wins = len(level_data[level_data['result'] == 'Win'])
@@ -124,21 +143,21 @@ def calculate_wave_statistics(df):
 
         for wave in range(1, TOTAL_WAVES + 1):
             wave_times = level_data[f'chargeTimePerWave_{wave}'].dropna()
-            wave_times = wave_times[wave_times > 0]  # only consider charging time greater than 0
+            wave_times = wave_times[wave_times > 0]  # Only consider charging time greater than 0
 
             if len(wave_times) > 0:
                 stats_records.append({
                     'Level': level,
                     'Wave': wave,
-                    'Games_Count': total_games,  # total game times
-                    'Avg_Charge_Time': wave_times.mean() if len(wave_times) > 0 else 0,
-                    'Min_Charge_Time': wave_times.min() if len(wave_times) > 0 else 0,
-                    'Max_Charge_Time': wave_times.max() if len(wave_times) > 0 else 0,
-                    'Median_Charge_Time': wave_times.median() if len(wave_times) > 0 else 0,
-                    'Success_Rate': success_rate  # calculate success rate
+                    'Games_Count': total_games,  # Total game times
+                    'Avg_Charge_Time': wave_times.mean(),
+                    'Min_Charge_Time': wave_times.min(),
+                    'Max_Charge_Time': wave_times.max(),
+                    'Median_Charge_Time': wave_times.median(),
+                    'Success_Rate': success_rate  # Calculate success rate
                 })
             else:
-                # if doesn't have valid data, record data
+                # If there's no valid data, record zeros
                 stats_records.append({
                     'Level': level,
                     'Wave': wave,
