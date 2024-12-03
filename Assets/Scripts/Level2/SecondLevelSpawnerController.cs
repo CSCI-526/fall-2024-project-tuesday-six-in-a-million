@@ -9,7 +9,7 @@ public class SecondLevelSpawnerController : MonoBehaviour
     public GameObject enemyPrefab;
     public Transform spawnPoint1;
     public Transform spawnPoint2;
-    public float enemyInterval = 1.0f;
+    public float enemyInterval = 0.5f;
     public int initialEnemiesPerWave = 3;
     public int enemiesPerWaveIncrement = 1;
 
