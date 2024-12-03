@@ -127,6 +127,7 @@ public class TowerController : MonoBehaviour
         }
 
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        bullet.SetActive(true);
         BulletController bulletController = bullet.GetComponent<BulletController>();
         if (bulletController == null)
         {
