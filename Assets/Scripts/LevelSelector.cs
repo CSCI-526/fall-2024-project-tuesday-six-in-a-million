@@ -5,6 +5,7 @@ public class LevelSelector : MonoBehaviour
     public void LoadLevelByName(string levelName)
     {
         SceneManager.LoadScene(levelName);
+        Time.timeScale = 1;
     }
 
     public void BackToMainMenu()
@@ -15,5 +16,6 @@ public class LevelSelector : MonoBehaviour
     public void LoadLevelByIndex(int levelIndex)
     {
         SceneManager.LoadScene(levelIndex);
+        Time.timeScale = 1;
     }
 }
