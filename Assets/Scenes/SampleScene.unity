@@ -1620,7 +1620,7 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 5
+  m_Intensity: 10
   m_Range: 30
   m_SpotAngle: 100
   m_InnerSpotAngle: 1
@@ -1746,8 +1746,13 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+<<<<<<< Updated upstream:Assets/Scenes/SampleScene.unity
   m_Intensity: 0.01
   m_Range: 100
+=======
+  m_Intensity: 0.1
+  m_Range: 300
+>>>>>>> Stashed changes:Assets/Scenes/Level 3.unity
   m_SpotAngle: 120
   m_InnerSpotAngle: 1
   m_CookieSize: 10
@@ -1785,7 +1790,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 1
+  m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -1805,7 +1810,7 @@ Transform:
   m_GameObject: {fileID: 705507993}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7029636, y: -0.07643393, z: -0.07643394, w: 0.7029636}
-  m_LocalPosition: {x: 0.0000008260006, y: 54.7, z: -2.1624652e-15}
+  m_LocalPosition: {x: 5.1, y: 53.6, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1854,7 +1859,7 @@ Light:
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
-  m_Color: {r: 1, g: 0.76803553, b: 0.5518868, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 3
   m_Range: 30
   m_SpotAngle: 10
