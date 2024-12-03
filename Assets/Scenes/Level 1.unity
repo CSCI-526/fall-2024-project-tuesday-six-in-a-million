@@ -38,6 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1067,6 +1068,7 @@ MonoBehaviour:
   goldUpdater: {fileID: 1870932599}
   regularTowerPrefab: {fileID: 1284891310}
   LightTowerPrefab: {fileID: 1465700008}
+  MortarPrefab: {fileID: 7780214886621098374, guid: 0a91322a69f03704fbb1d4aa3e75f484, type: 3}
   alertText: {fileID: 1335922259}
   shiftGeneration: 0
 --- !u!1 &294780925
